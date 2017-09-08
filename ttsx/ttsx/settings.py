@@ -15,16 +15,18 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'i*)i1-4w@qjnck77b7+xhe%u8^&dhnpcz-kh=25kp6e@e-=f^6'
+SECRET_KEY = '3_qid^h$dx+zw(0)v5tf7e6i0x+v(t2j*j6c6gifgkk)*x@@(y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -68,6 +70,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ttsx.wsgi.application'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
