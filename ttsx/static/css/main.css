@@ -377,7 +377,7 @@ html,body{height:100%}
 .cart_list_td .col06 .num_add input{width:38px;height:28px;text-align:center;line-height:30px;border:0px;display:block;float:left;outline:none;border-left:1px solid #ddd;border-right:1px solid #ddd;}
 
 
-.settlements{width:1198px;height:78px;border:1px solid #ddd;background-color:#fff4e8;margin:-1px auto 0;}
+.settlements{width:1198px;height:78px;border:1px solid #ddd;background-color:#fff4e8;margin:-1px auto 30px;}
 .settlements li{line-height:78px;float:left;}
 .settlements .col01{width:4%;text-align:center}
 .settlements .col02{width:12%;}
