@@ -1,50 +1,10 @@
-{% extends 'base.html' %}
-{% block title %}
-    用户中心
-{% endblock title %}
+{% extends 'login_status.html' %}
 {% block script %}
-    <script>
-        $(function () {
-            $.get('/user/get_user_msg/', function (data) {
-                if (data == '') {
-                    $('#ulist').empty().append('<li><span>用户名：</span>无</li> ' +
-                        '<li><span>联系方式：</span>无</li> ' +
-                        '<li><span>联系地址：</span>无</li>')
-                }
-                else {
-                    $('#ulist').empty().append('<li><span>用户名：</span>'+data.name+'</li> <li><span>联系方式：</span>' + data.phone + '</li><li><span>联系地址：</span>'+data.addr+'</li>')
-                        }
-                    })
-                    })
-    </script>
 {% endblock script %}
 {% block body %}
-    <div class="header_con">
-        <div class="header">
-            <div class="welcome fl">欢迎来到天天生鲜!</div>
-            <div class="fr">
-                <div class="login_info fl">
-                    欢迎您：<em>张 山</em>
-                </div>
-                <div class="login_btn fl">
-                    <a href="login.html">登录</a>
-                    <span>|</span>
-                    <a href="register.html">注册</a>
-                </div>
-                <div class="user_link fl">
-                    <span>|</span>
-                    <a href="user_center_info.html">用户中心</a>
-                    <span>|</span>
-                    <a href="cart.html">我的购物车</a>
-                    <span>|</span>
-                    <a href="user_center_order.html">我的订单</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="search_bar clearfix">
-        <a href="index.html" class="logo fl"><img src="/static/images/logo.png"></a>
+        <a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
         <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
         <div class="search_con fr">
             <input type="text" class="input_text fl" name="" placeholder="搜索商品">
@@ -57,7 +17,7 @@
             <h3>用户中心</h3>
             <ul>
                 <li><a href="/user/user_center_info/" class="active">· 个人信息</a></li>
-                <li><a href="user_center_order.html">· 全部订单</a></li>
+                <li><a href="/detail/user_center_order/">· 全部订单</a></li>
                 <li><a href="/user/user_center_site/">· 收货地址</a></li>
             </ul>
         </div>
@@ -65,6 +25,9 @@
             <div class="info_con clearfix">
                 <h3 class="common_title2">基本信息</h3>
                 <ul class="user_info_list" id="ulist">
+                    <li><span>用户名：</span>{{ name }}</li>
+                    <li><span>联系方式：</span>{{ phone }}</li>
+                    <li><span>联系地址：</span>{{ addr }}</li>
 
                 </ul>
             </div>
@@ -124,7 +87,7 @@
                 </ul>
             </div>
         </div>
-    </div>R
+    </div>
 
 
 

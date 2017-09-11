@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 import djcelery
+
 djcelery.setup_loader()
 BROKER_URL = 'redis://127.0.0.1:6379/2'
 
@@ -122,6 +123,7 @@ STATICFILES_DIRS = [
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.163.com'
 EMAIL_PORT = 25
@@ -131,7 +133,6 @@ EMAIL_HOST_USER = 'keke35990@163.com'
 EMAIL_HOST_PASSWORD = 'ttsx2017'
 #收件人看到的发件人
 EMAIL_FROM = 'python<keke35990@163.com>'
-
 
 
 CELERY_IMPORTS = ('user.task')
