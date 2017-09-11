@@ -1,7 +1,11 @@
 from django.shortcuts import render
 
 # Create your views here.
+from cart import models
+
+
 def index(request):
+    sum = models.objects.all().values('count')
     return render(request, 'goods/index.html')
 
 # def list(request):
@@ -18,3 +22,7 @@ def model05(request):
     return render(request, 'goods/model05.html')
 def model06(request):
     return render(request, 'goods/model06.html')
+# def count(request):
+#     sum=models.objects.all().values('count')
+def detail(request):
+    return render(request,'goods/detail.html')
