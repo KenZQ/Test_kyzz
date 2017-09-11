@@ -14,5 +14,6 @@ urlpatterns = [
     url('^edit_addr_msg/$', views.edit_addr_msg),
     url('^get_user_msg/$', views.get_user_msg),
     url('^getmsg/$', views.getmsg),
+    url('^top_area/$', views.top_area)
 
 ]
