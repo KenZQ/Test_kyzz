@@ -2,12 +2,88 @@
 {% block title %}购物车{% endblock title %}
 {% block script %}
     <script>
-        $(function () {
-            $("#check_all").click(function () {
-            var state=$(this).prop('checked');
+        function cart_del(cart_id) {
+
+        del = confirm('确定删除商品么？');
+        if(del){
+            $.get('/cart/delete' + cart_id + '/', function (data) {
+                if (data.ok ==1){
+                    $('ul').remove('#'+ cart_id);
+                    total();
+                }
+            });
+        }
+    }
+
+        function total() {
+            total_1 = 0;
+            total_counnt = 0;
+            $('.col07').each(function(){
+                count=$(this).children('.num_show').val();
+                price=$(this).children('.col05').text();
+                total_2 = parseFloat(count)*parseFloat(price);
+                $(this).text(total_2.toFixed(2));
+                total_1+=total_2;
+                total_count++;
+            });
+            $('#total').text(total_1.toFixed(2));
+            $('.total_count1').text(total_counnt);
+        };
+
+{#           设置全选#}
+            $('#check_all').click(function () {
+                state=$(this).prop('checked');
             $(':checkbox:not(#check_all)').prop('checked',state);
-        });
-        })
+            });
+{#            设置单选#}
+            $(':checkbox:not(#check_all)').click(function () {
+                if($(this).prop('checked')){
+                    if($(':checked').length+1 ==$(':checkbox').length){
+                        $('#check_all').prop('checked',true);
+                    }
+                }else {
+                    $('#check_all').prop('checked',false);
+                }
+            });
+{#           设置增加#}
+            $('.add').click(function () {
+                txt=$(this).next();
+                if(txt.val()>=99){
+                    alert('不能在多了，再买吃不下了');
+        			return false;
+        		}
+                txt.val(parseInt(txt.val())+1).blur();
+                });
+{#            设置减少#}
+            $('.minus').click(function () {
+                 txt=$(this).prev();
+                 if(txt.val()<=1){
+                    alert('已经最少了，再少就没了');
+    			    return false;
+        		}
+                txt.val(parseInt(txt.val())-1).blur();
+                });
+
+            $('.num_show').blur(function () {
+               count=$(this).val();
+               if(count<=0){
+                   alert('已经最少了，再少就没了');
+                   $(this).focus();
+                   return;
+               }else if(count>=100){
+                   alert('数量不能超过100');
+                   $(this).focus();
+                   return;
+               }
+               cart_id=$(this).parents('.cart_list_td').attr('id');
+               $.get('/cart/edit'+cart_id+'_'+count+'/',function (data) {
+                   if(data.ok==0){
+                       total();
+                   }else {
+                       $(this).val('1');
+                   }
+               })
+            });
 
     </script>
 {% endblock script %}
@@ -54,61 +130,47 @@
 		<li class="col05">小计</li>
 		<li class="col06">操作</li>
 	</ul>
-    	<ul class="cart_list_td clearfix">
-		<li class="col01"><input type="checkbox" name="" checked="" class="checked"></li>
+	<ul class="cart_list_td clearfix" id="'{{ cart.id }}">
+		<li class="col01"><input type="checkbox" name="cart_id" checked="{{cart.id}}" class="checked"></li>
 		<li class="col02"><img src="/static/images/goods/goods012.jpg"></li>
-		<li class="col03">奇异果<br><em>25.80元/500g</em></li>
-		<li class="col04">500g</li>
-		<li class="col05">25.80元</li>
+		<li class="col03">{{cart.goods.gtitle}}<br><em>25.80元/500g</em></li>
+		<li class="col04">{{cart.goods.gunit}}</li>
+		<li class="col05">{{cart.goods.gprice}}</li>
 		<li class="col06">
 			<div class="num_add">
 				<a href="javascript:;" class="add fl">+</a>
-				<input type="text" class="num_show fl" value="1">
-				<a href="javascript:;" class="minus fl">-</a>
-			</div>
-		</li>
-		<li class="col07">25.80元</li>
-		<li class="col08"><a href="javascript:;">删除</a></li>
-	</ul>
-	<ul class="cart_list_td clearfix">
-		<li class="col01"><input type="checkbox" name="" checked="" class="checked"></li>
-		<li class="col02"><img src="/static/images/goods/goods012.jpg"></li>
-		<li class="col03">奇异果<br><em>25.80元/500g</em></li>
-		<li class="col04">500g</li>
-		<li class="col05">25.80元</li>
-		<li class="col06">
-			<div class="num_add">
-				<a href="javascript:;" class="add fl">+</a>
-				<input type="text" class="num_show fl" value="1">	
+				<input type="text" class="num_show fl" value="{{cart.count}}">
 				<a href="javascript:;" class="minus fl">-</a>	
 			</div>
 		</li>
 		<li class="col07">25.80元</li>
-		<li class="col08"><a href="javascript:;">删除</a></li>
+		<li class="col08"><a href="javascript:cart_del({{cart.id}});">删除</a></li>
 	</ul>
 
-	<ul class="cart_list_td clearfix">
-		<li class="col01"><input type="checkbox" name="" checked="" class="checked"></li>
+	<ul class="cart_list_td clearfix" id="'{{ cart.id }}">
+		<li class="col01"><input type="checkbox" name="cart_id" checked="{{cart.id}}" class="checked"></li>
 		<li class="col02"><img src="/static/images/goods/goods003.jpg"></li>
-		<li class="col03">大兴大棚草莓<br><em>16.80元/500g</em></li>
-		<li class="col04">500g</li>
-		<li class="col05">16.80元</li>
+		<li class="col03">{{cart.goods.gtitle}}<br><em>16.80元/500g</em></li>
+		<li class="col04">{{cart.goods.gunit}}</li>
+		<li class="col05">{{cart.goods.gprice}}</li>
 		<li class="col06">
 			<div class="num_add">
 				<a href="javascript:;" class="add fl">+</a>
-				<input type="text" class="num_show fl" value="1">	
+				<input type="text" class="num_show fl" value="{{cart.count}}">
 				<a href="javascript:;" class="minus fl">-</a>	
 			</div>
 		</li>
         <li class="col07">16.80元</li>
-		<li class="col08"><a href="javascript:;">删除</a></li>
+		<li class="col08"><a href="javascript:cart_del({{cart.id}});">删除</a></li>
 	</ul>
 	
 
 	<ul class="settlements">
 		<li class="col01"><input id="check_all" type="checkbox" name="" checked=""></li>
 		<li class="col02">全选</li>
-		<li class="col03">合计(不含运费)：<span>¥</span><em>42.60</em><br>共计<b>2</b>件商品</li>
+		<li class="col03">合计(不含运费)：<span>¥</span>
+            <em id="total">0</em>
+            <br>共计<b class="total_count1">0</b>件商品</li>
 		<li class="col04"><a href="place_order.html">去结算</a></li>
 	</ul>
 
