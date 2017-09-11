@@ -1,7 +1,7 @@
 from django.db import models
-
+from tinymce.models import HTMLField
 # Create your models here.
-#coding=utf-8
+
 from django.db import models
 
 class TypeInfo(models.Model):
@@ -10,7 +10,7 @@ class TypeInfo(models.Model):
     #是否删除
     isDelete=models.BooleanField(default=False)
     def __str__(self):
-        return self.ttitle.encode('utf-8')
+        return self.ttitle
 
 
 # 商品信息如下：
@@ -32,8 +32,8 @@ class GoodsInfo(models.Model):
     #库存量
     gkucun=models.IntegerField()
     #描述
-    gcontent=models.TextField()
+    gcontent=HTMLField()
     #类型
     gtype=models.ForeignKey(TypeInfo)
     def __str__(self):
-        return self.gtitle.encode('utf-8')
+        return self.gtitle
