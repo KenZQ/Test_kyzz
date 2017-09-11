@@ -122,7 +122,7 @@ STATICFILES_DIRS = [
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 
-<<<<<<< HEAD
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.163.com'
 EMAIL_PORT = 25
@@ -136,12 +136,12 @@ EMAIL_FROM = 'python<keke35990@163.com>'
 
 
 CELERY_IMPORTS = ('user.task')
-=======
+
 TINYMCE_DEFAULT_CONFIG = {
     'theme': 'advanced',
     'width': 600,
     'height': 400,
 }
->>>>>>> cloverzsl
+
 
 
