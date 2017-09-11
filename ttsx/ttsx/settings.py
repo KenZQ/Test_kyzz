@@ -17,6 +17,7 @@ import djcelery
 djcelery.setup_loader()
 BROKER_URL = 'redis://127.0.0.1:6379/2'
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -129,3 +130,5 @@ EMAIL_FROM = 'python<keke35990@163.com>'
 
 
 CELERY_IMPORTS = ('user.task')
+
+

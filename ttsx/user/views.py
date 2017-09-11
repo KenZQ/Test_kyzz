@@ -1,9 +1,12 @@
 from django.conf import settings
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
+from . import task
 from .models import *
+
+
 from hashlib import sha1
 
 
@@ -35,16 +38,15 @@ def register_msg(request):
     request.session['user_name'] = new_user_name
     request.session['email'] = new_user_email
     new_user.save()
-    return redirect('/user/send/?email=%s'%new_user_email)
+    # return redirect('/user/send/?email=%s'%new_user_email)
     # request.session['passwd'] = new_user_pwd
     # return redirect('/login2/?user_name=%s&pwd=%s'%(new_user_name,new_user_pwd))
+    return redirect('/user/send/')
 
 def send(request):
-    uemail = request.session['email']
-    msg = '<a href="http://127.0.0.1:8000/user/active/" target="_blank">点击激活</a>'
-    send_mail('注册激活', '', settings.EMAIL_FROM,
-              [uemail], html_message=msg)
-    return redirect('/user/login/')
+    task.send(request)
+    return render(request,'user/login.html')
+
 
 
 # 登录
@@ -118,7 +120,48 @@ def user_center_info(request):
 def user_center_site(request):
     return render(request, 'user/user_center_site.html')
 
-
+#用户中心，个人信息
+def get_user_msg(request):
+    try:
+        usermsg = UserAddressInfo.objects.get(user_id = request.session['pid'])
+        name = usermsg.uname
+        addr = usermsg.uaddress
+        phone = usermsg.uphone
+        ulist = {'name': name, 'addr': addr, 'phone': phone}
+    except:
+        ulist = {}
+    return JsonResponse(ulist)
+# 点击退出，清除ｓｅｓｓｉｏｎ
 def user_exit(request):
     request.session.flush()
     return render(request, '/')
+
+# 编辑个人信息，如收货地址
+def edit_addr_msg(request):
+    dict = request.POST
+    user_id = request.session['pid']
+    try:
+        usermsg = UserAddressInfo.objects.get(user_id = user_id)
+    except:
+        usermsg = UserAddressInfo()
+    usermsg.uname = dict.get('recipients')
+    usermsg.uaddress =dict.get('addr')
+    usermsg.uphone = dict.get('phone')
+    usermsg.user_id = user_id
+
+    usermsg.save()
+
+    return render(request, 'user/user_center_site.html')
+
+# 获取个人地址信息
+def getmsg(request):
+    try:
+        usermsg = UserAddressInfo.objects.get(user_id = request.session['pid'])
+        name = usermsg.uname
+        addr = usermsg.uaddress
+        phone = usermsg.uphone
+        ulist = {'name': name, 'addr': addr, 'phone': phone}
+    except:
+        ulist = {}
+    return JsonResponse(ulist)
+
