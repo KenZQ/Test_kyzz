@@ -12,7 +12,7 @@ urlpatterns = [
     url('^user_center_site/$', views.user_center_site),
     url('^exit/$', views.user_exit),
     url('^edit_addr_msg/$', views.edit_addr_msg),
-    url('^get_user_msg/$', views.get_user_msg),
+
     url('^getmsg/$', views.getmsg),
     url('^top_area/$', views.top_area)
 

@@ -108,19 +108,9 @@ def islogin(fn):
 
     return inner
 
-
+# 用户中心，个人信息
 @islogin
 def user_center_info(request):
-    return render(request, 'user/user_center_info.html')
-
-
-@islogin
-def user_center_site(request):
-    return render(request, 'user/user_center_site.html')
-
-
-# 用户中心，个人信息
-def get_user_msg(request):
     try:
         usermsg = UserAddressInfo.objects.get(user_id=request.session['pid'])
         name = usermsg.uname
@@ -129,7 +119,17 @@ def get_user_msg(request):
         ulist = {'name': name, 'addr': addr, 'phone': phone}
     except:
         ulist = {}
-    return JsonResponse(ulist)
+    return render(request, 'user/user_center_info.html',ulist)
+
+
+@islogin
+def user_center_site(request):
+
+    return render(request, 'user/user_center_site.html')
+
+
+
+
 
 
 # 点击退出，清除ｓｅｓｓｉｏｎ
@@ -137,8 +137,8 @@ def user_exit(request):
     request.session.flush()
     return redirect('/')
 
-
 # 编辑个人信息，如收货地址
+@islogin
 def edit_addr_msg(request):
     dict = request.POST
     user_id = request.session['pid']
@@ -152,8 +152,9 @@ def edit_addr_msg(request):
     usermsg.user_id = user_id
 
     usermsg.save()
-
-    return render(request, 'user/user_center_site.html')
+    str1 = usermsg.uaddress +'  ('  +usermsg.uname + ' 收' + ')   '+ usermsg.uphone
+    context = {'addr':str1}
+    return render(request, 'user/user_center_site.html', context)
 
 
 # 获取个人地址信息
@@ -174,7 +175,7 @@ def top_area(request):
     try:
         id = request.session['pid']
     except:
-        return JsonResponse()
+        return JsonResponse('')
 
     user = UserAddressInfo.objects.get(user_id=id)
     context = {'uname': user.uname}

@@ -1,6 +1,5 @@
 {% extends 'login_status.html' %}
 {% block script %}
-    <script type="text/javascript" src="/static/js/user_center/user_center_info.js"></script>
 {% endblock script %}
 {% block body %}
 
@@ -26,6 +25,9 @@
             <div class="info_con clearfix">
                 <h3 class="common_title2">基本信息</h3>
                 <ul class="user_info_list" id="ulist">
+                    <li><span>用户名：</span>{{ name }}</li>
+                    <li><span>联系方式：</span>{{ phone }}</li>
+                    <li><span>联系地址：</span>{{ addr }}</li>
 
                 </ul>
             </div>

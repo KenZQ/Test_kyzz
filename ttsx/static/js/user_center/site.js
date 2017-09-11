@@ -4,9 +4,13 @@
 
 $(function () {
     $.get('/user/getmsg/', function (data) {
-        if (data == '') {
+
+        if (data.name == '') {
             $('#addr').empty().append('无')
         }
-        $('#addr').empty().append(data.addr + ' （' + data.name + '收） ' + data.phone);
+        else {
+            $('#addr').empty().append(data.addr + '　('+data.name + '收)　' + data.phone
+        )
+        }
     });
 });
