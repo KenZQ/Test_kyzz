@@ -10,5 +10,6 @@ urlpatterns = [
     url('^model03/$',views.model04),
     url('^model04/$',views.model05),
     url('^model05/$',views.model06),
-
+    url('^detail/$',views.detail),
+    url('^cart.html',views.detail),
  ]
