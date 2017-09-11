@@ -72,7 +72,7 @@ def verify_msg(request):
 
     if not document.isActive:
         return HttpResponse('未激活')
-    request.session.set_expiry(300)
+    request.session.set_expiry(600)
     request.session['pid'] = document.id
     # referer_web = request.META['HTTP_REFERER']
     try:
@@ -80,6 +80,7 @@ def verify_msg(request):
         return redirect(referer_web)
     except:
         pass
+
     return redirect('/user/user_center_info/')
 
 
@@ -173,7 +174,7 @@ def top_area(request):
     try:
         id = request.session['pid']
     except:
-        return JsonResponse('')
+        return JsonResponse()
 
     user = UserAddressInfo.objects.get(user_id=id)
     context = {'uname': user.uname}
