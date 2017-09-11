@@ -23,4 +23,5 @@ urlpatterns = [
     url('^cart/', include('cart.urls')),
     url('^', include('goods.urls')),
 
+
 ]
