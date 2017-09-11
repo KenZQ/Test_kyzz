@@ -12,4 +12,5 @@ urlpatterns = [
     url('^model05/$',views.model06),
     url('^detail/$',views.detail),
     url('^cart.html',views.detail),
+    url(r'^tinymce/', include('tinymce.urls')),
  ]
