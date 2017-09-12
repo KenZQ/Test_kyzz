@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'djcelery',
     'tinymce',
 
+
 )
 
 MIDDLEWARE_CLASSES = (
