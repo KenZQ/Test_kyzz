@@ -174,9 +174,10 @@ def getmsg(request):
 def top_area(request):
     try:
         id = request.session['pid']
+        user = UserAddressInfo.objects.get(user_id=id)
+        context = {'uname': user.uname}
+        return JsonResponse(context)
     except:
-        return JsonResponse('')
+        return JsonResponse({'name':''})
 
-    user = UserAddressInfo.objects.get(user_id=id)
-    context = {'uname': user.uname}
-    return JsonResponse(context)
+
