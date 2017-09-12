@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 import djcelery
+
 djcelery.setup_loader()
 BROKER_URL = 'redis://127.0.0.1:6379/2'
 
@@ -135,8 +136,8 @@ EMAIL_HOST_PASSWORD = 'ttsx2017'
 EMAIL_FROM = 'python<keke35990@163.com>'
 
 
-
 CELERY_IMPORTS = ('user.task')
+
 
 TINYMCE_DEFAULT_CONFIG = {
     'theme': 'advanced',
