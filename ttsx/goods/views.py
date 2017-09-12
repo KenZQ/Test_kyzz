@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from cart.models import *
@@ -9,15 +10,16 @@ from goods.models import *
 def index(request):
     # 获得最新火的4个商品
     hot = GoodsInfo.objects.all().order_by('gclick')[0:4]
-    context = {'guest_cart': 1, 'title': '首页', 'hot': hot}
     # 获得分类下的点击商品,下面拿出来的是一个装有字典的列表，就是各个对象
     typelist = TypeInfo.objects.all()
+    context = {'guest_cart': 1, 'title': '首页', 'hot': hot, 'typelist':typelist}
+
     for i in range(len(typelist)):
         type = typelist[i]
         # 加上负号，就是倒序排序，order_by默认升序排列，按照id倒序排序
         goods1 = type.goodsinfo_set.order_by('-id')[0:4]
         # 按照点击量倒序排序
-        goods2 = type.goodsinfo_set.order_by('-glick')[0:4]
+        goods2 = type.goodsinfo_set.order_by('-gclick')[0:4]
         key1 = 'type' + str(i)
         key2 = 'type' + str(i) + str(i)
         context.setdefault(key1, goods1)
@@ -46,16 +48,12 @@ def list(request, tid, sid, pindex):
     return render(request, 'goods/list.html', context)
 
 
-
-def model_show(request, id):
-    goods_type = TypeInfo.objects.get(id=id)
-    type = goods_type.ttitle
-    return render(request,'')
-
-
-
-
 # def count(request):
 #     sum=models.objects.all().values('count')
-def detail(request):
-    return render(request, 'goods/detail.html')
+def detail(request,id):
+    try:
+        good = GoodsInfo.objects.get(id=id)
+        newgoods =  GoodsInfo.objects.filter(isDelete=False).order_by('-id')[0:2]
+        return render(request, 'goods/detail.html', {'good':good, 'newgoods':newgoods})
+    except:
+        return HttpResponse('您的网络可能有问题')

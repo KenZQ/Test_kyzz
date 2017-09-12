@@ -1,6 +1,7 @@
-{% extends 'login_status.html' %}
+{% extends 'index_base.html' %}
 {% block script %}
     <script>
+
         $(function () {
             $(".sort_bar").children('a').eq({{ sort }}-1).addClass('active').siblings().removeClass('active');
             $(".sort_bar").delegate('a', 'click', function () {
@@ -66,8 +67,8 @@
                 <ul>
                     {% for good in news %}
                         <li>
-                            <a href=""><img src='/static/{{ good.gpic }}'></a>
-                            <h4><a href="#">{{ good.gtitle }}</a></h4>
+                            <a href="/good_detail{{good.id}}/"><img src='/static/{{ good.gpic }}'></a>
+                            <h4><a href="/good_detail{{good.id}}/">{{ good.gtitle }}</a></h4>
                             <div class="prize">￥{{ good.gprice }}</div>
                         </li>
                     {% endfor %}
@@ -86,8 +87,8 @@
             <ul class="goods_type_list clearfix">
                 {% for good in page %}
                     <li>
-                        <a href="/detail/"><img src='/static/{{ good.gpic }}'></a>
-                        <h4><a href="/detail/">{{ good.gtitle }}</a></h4>
+                        <a href="/good_detail{{good.id}}/"><img src='/static/{{ good.gpic }}'></a>
+                        <h4><a href="/good_detail{{good.id}}/">{{ good.gtitle }}</a></h4>
                         <div class="operate">
                             <span class="prize">￥{{ good.gprice }}</span>
                             <span class="unit">{{ good.gprice }}/500g</span>
