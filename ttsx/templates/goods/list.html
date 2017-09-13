@@ -67,8 +67,8 @@
                 <ul>
                     {% for good in news %}
                         <li>
-                            <a href="/good_detail{{good.id}}/"><img src='/static/{{ good.gpic }}'></a>
-                            <h4><a href="/good_detail{{good.id}}/">{{ good.gtitle }}</a></h4>
+                            <a href="/good_detail{{ good.id }}/"><img src='/static/{{ good.gpic }}'></a>
+                            <h4><a href="/good_detail{{ good.id }}/">{{ good.gtitle }}</a></h4>
                             <div class="prize">￥{{ good.gprice }}</div>
                         </li>
                     {% endfor %}
@@ -79,7 +79,7 @@
 
         <div class="r_wrap fr clearfix">
             <div class="sort_bar">
-                <a href="/list{{ type_id }}11/" >默认</a>
+                <a href="/list{{ type_id }}11/">默认</a>
                 <a href="/list{{ type_id }}21/">价格</a>
                 <a href="/list{{ type_id }}31/">人气</a>
             </div>
@@ -87,8 +87,8 @@
             <ul class="goods_type_list clearfix">
                 {% for good in page %}
                     <li>
-                        <a href="/good_detail{{good.id}}/"><img src='/static/{{ good.gpic }}'></a>
-                        <h4><a href="/good_detail{{good.id}}/">{{ good.gtitle }}</a></h4>
+                        <a href="/good_detail{{ good.id }}/"><img src='/static/{{ good.gpic }}'></a>
+                        <h4><a href="/good_detail{{ good.id }}/">{{ good.gtitle }}</a></h4>
                         <div class="operate">
                             <span class="prize">￥{{ good.gprice }}</span>
                             <span class="unit">{{ good.gprice }}/500g</span>
@@ -113,12 +113,12 @@
                         <a href="/list{{ type_id }}{{ sort }}{{ i }}/" class="active">{{ i }}</a>
 
                     {% else %}
-                    <a href="/list{{ type_id }}{{ sort }}{{ i }}/" class="">{{ i }}</a>
-                     {% endif %}
+                        <a href="/list{{ type_id }}{{ sort }}{{ i }}/" class="">{{ i }}</a>
+                    {% endif %}
                 {% endfor %}
 
                 {% if page.has_next %}
-                <a href="/list{{ type_id }}{{ sort }}{{ page.next_page_number }}/">&lt;下一页</a>
+                    <a href="/list{{ type_id }}{{ sort }}{{ page.next_page_number }}/">&lt;下一页</a>
 
                 {% else %}
                     <a href="">&lt;下一页</a>

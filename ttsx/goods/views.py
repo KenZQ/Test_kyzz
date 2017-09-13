@@ -48,8 +48,7 @@ def list(request, tid, sid, pindex):
     return render(request, 'goods/list.html', context)
 
 
-# def count(request):
-#     sum=models.objects.all().values('count')
+
 def detail(request,id):
     try:
         good = GoodsInfo.objects.get(id=id)
