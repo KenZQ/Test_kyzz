@@ -3,114 +3,146 @@
     登录
 {% endblock title %}
 {% block script %}
+    <script>
+        $(function () {
+            var $num = $('.num_show');
+            var $total = $('.tprice');
+            var price = parseInt($('.price').text());
+            $('.add').click(function () {
+                if ($num.val() != 0) {
+                    var count = parseInt($num.val()) + 1;
+                    $num.val(count);
+                    var tprice = price * count;
+                    $total.text(tprice);
+                }
+                else {
+                    $num.val(0);
+                    $total.text(0);
+                }
+            });
 
+            $('.minus').click(function () {
+                if ($num.val() != 0) {
+                    var count = parseInt($num.val()) - 1;
+                    $num.val(count);
+                    var tprice = price * count;
+                    $total.text(tprice);
+                }
+                else {
+                    $num.val(0);
+                    $total.text(0);
+                }
+            });
+
+        });
+    </script>
 {% endblock script %}
 
 
 {% block body %}
 
-	<div class="search_bar clearfix">
-		<a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
-		<div class="search_con fl">
-			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
-			<input type="button" class="input_btn fr" name="" value="搜索">
-		</div>
-		<div class="guest_cart fr">
-			<a href="cart.html" class="cart_name fl">我的购物车</a>
-			<div class="goods_count fl" id="show_count">1</div>
-		</div>
-	</div>
+    <div class="search_bar clearfix">
+        <a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
+        <div class="search_con fl">
+            <input type="text" class="input_text fl" name="" placeholder="搜索商品">
+            <input type="button" class="input_btn fr" name="" value="搜索">
+        </div>
+        <div class="guest_cart fr">
+            <a href="cart.html" class="cart_name fl">我的购物车</a>
+            <div class="goods_count fl" id="show_count">1</div>
+        </div>
+    </div>
 
-	<div class="navbar_con">
-		<div class="navbar clearfix">
-			<div class="subnav_con fl">
-				<h1>全部商品分类</h1>	
-				<span></span>			
-				<ul class="subnav">
-					<li><a href="/list111/" class="fruit">新鲜水果</a></li>
-					<li><a href="/list211/" class="seafood">海鲜水产</a></li>
-					<li><a href="/list311/" class="meet">猪牛羊肉</a></li>
-					<li><a href="/list411/" class="egg">禽类蛋品</a></li>
-					<li><a href="/list511/" class="vegetables">新鲜蔬菜</a></li>
-					<li><a href="/list611/" class="ice">速冻食品</a></li>
-				</ul>
-			</div>
-			<ul class="navlist fl">
-				<li><a href="/">首页</a></li>
-				<li class="interval">|</li>
-				<li><a href="">手机生鲜</a></li>
-				<li class="interval">|</li>
-				<li><a href="">抽奖</a></li>
-			</ul>
-		</div>
-	</div>
+    <div class="navbar_con">
+        <div class="navbar clearfix">
+            <div class="subnav_con fl">
+                <h1>全部商品分类</h1>
+                <span></span>
+                <ul class="subnav">
+                    <li><a href="/list111/" class="fruit">新鲜水果</a></li>
+                    <li><a href="/list211/" class="seafood">海鲜水产</a></li>
+                    <li><a href="/list311/" class="meet">猪牛羊肉</a></li>
+                    <li><a href="/list411/" class="egg">禽类蛋品</a></li>
+                    <li><a href="/list511/" class="vegetables">新鲜蔬菜</a></li>
+                    <li><a href="/list611/" class="ice">速冻食品</a></li>
+                </ul>
+            </div>
+            <ul class="navlist fl">
+                <li><a href="/">首页</a></li>
+                <li class="interval">|</li>
+                <li><a href="">手机生鲜</a></li>
+                <li class="interval">|</li>
+                <li><a href="">抽奖</a></li>
+            </ul>
+        </div>
+    </div>
 
-	<div class="breadcrumb">
-		<a href="#">全部分类</a>
-		<span>></span>
-		<a href="/list111/">新鲜水果</a>
-		<span>></span>
-		<a href="#">商品详情</a>
-	</div>
+    <div class="breadcrumb">
+        <a href="#">全部分类</a>
+        <span>></span>
+        <a href="/list111/">新鲜水果</a>
+        <span>></span>
+        <a href="#">商品详情</a>
+    </div>
 
-	<div class="goods_detail_con clearfix">
-		<div class="goods_detail_pic fl"><img src="/static/{{ good.gpic }}"></div>
+    <div class="goods_detail_con clearfix">
+        <div class="goods_detail_pic fl"><img src="/static/{{ good.gpic }}"></div>
 
-		<div class="goods_detail_list fr">
-			<h3>{{ good.gtitle }}</h3>
-			<p>{{ good.gjianjie }}</p>
-			<div class="prize_bar">
-				<span class="show_pirze">¥<em>{{ good.gprice }}</em></span>
-				<span class="show_unit">单  位：500g</span>
-			</div>
-			<div class="goods_num clearfix">
-				<div class="num_name fl">数 量：</div>
-				<div class="num_add fl">
-					<input type="text" class="num_show fl" value="1">
-					<a href="javascript:;" class="add fr">+</a>
-					<a href="javascript:;" class="minus fr">-</a>	
-				</div> 
-			</div>
-			<div class="total">总价：<em>元</em></div>
-			<div class="operate_btn">
-				<a href="javascript:;" class="buy_btn">立即购买</a>
-				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>				
-			</div>
-		</div>
-	</div>
+        <div class="goods_detail_list fr">
+            <h3>{{ good.gtitle }}</h3>
+            <p>{{ good.gjianjie }}</p>
+            <div class="prize_bar">
+                <span class="show_pirze">¥<em class="price">{{ good.gprice }}</em></span>
+                <span class="show_unit">单  位：500g</span>
+            </div>
+            <div class="goods_num clearfix">
+                <div class="num_name fl">数 量：</div>
+                <div class="num_add fl">
+                    <input type="text" class="num_show fl" value="1">
+                    <a href="#" class="add fr">+</a>
+                    <a href="#" class="minus fr">-</a>
+                </div>
+            </div>
+            <div class="total">总价：<em class="tprice">{{ good.gprice }}</em>元
+                <div class="operate_btn">
+                    <a href="" class="buy_btn">立即购买</a>
+                    <a href="" class="add_cart" id="add_cart">加入购物车</a>
+                </div>
+            </div>
+        </div>
 
-	<div class="main_wrap clearfix">
-		<div class="l_wrap fl clearfix">
-			<div class="new_goods">
-				<h3>新品推荐</h3>
-				<ul>
-                    {% for newgood in newgoods %}
-                    <li>
-						<a href="/good_detail{{ newgood.id }}/"><img src="/static/{{ newgood.gpic }}"></a>
-						<h4><a href="/good_detail{{ newgood.id }}/">{{ newgood.gtitle }}</a></h4>
-						<div class="prize">￥{{ newgood.gprice }}</div>
-					</li>
-                    {% endfor %}
+        <div class="main_wrap clearfix">
+            <div class="l_wrap fl clearfix">
+                <div class="new_goods">
+                    <h3>新品推荐</h3>
+                    <ul>
+                        {% for newgood in newgoods %}
+                            <li>
+                                <a href="/good_detail{{ newgood.id }}/"><img src="/static/{{ newgood.gpic }}"></a>
+                                <h4><a href="/good_detail{{ newgood.id }}/">{{ newgood.gtitle }}</a></h4>
+                                <div class="prize">￥{{ newgood.gprice }}</div>
+                            </li>
+                        {% endfor %}
 
-				</ul>
-			</div>
-		</div>
+                    </ul>
+                </div>
+            </div>
 
-		<div class="r_wrap fr clearfix">
-			<ul class="detail_tab clearfix">
-				<li class="active">商品介绍</li>
-				<li>评论</li>
-			</ul>
+            <div class="r_wrap fr clearfix">
+                <ul class="detail_tab clearfix">
+                    <li class="active">商品介绍</li>
+                    <li>评论</li>
+                </ul>
 
-			<div class="tab_content">
-				<dl>
-					<dt>商品详情：</dt>
-					<dd>{{ good.gcontent|safe }} </dd>
-				</dl>
-			</div>
+                <div class="tab_content">
+                    <dl>
+                        <dt>商品详情：</dt>
+                        <dd>{{ good.gcontent|safe }} </dd>
+                    </dl>
+                </div>
 
-		</div>
-	</div>
+            </div>
+        </div>
 
 
 
