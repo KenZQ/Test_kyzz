@@ -1,43 +1,16 @@
-{% extends 'base.html' %}
+{% extends 'index_base.html' %}
 {% block title %}
     登录
 {% endblock title %}
-{% block script %}<script type="text/javascript" src="/static/js/register.js"></script>{% endblock script %}
-<script>
-    $(function(){
+{% block script %}
 
-    })
+{% endblock script %}
 
-</script>
 
 {% block body %}
 
-<div class="header_con">
-		<div class="header">
-			<div class="welcome fl">欢迎来到天天生鲜!</div>
-			<div class="fr">
-				<div class="login_info fl">
-					欢迎您：<em>张 山</em>
-				</div>
-				<div class="login_btn fl">
-					<a href="login.html">登录</a>
-					<span>|</span>
-					<a href="register.html">注册</a>
-				</div>
-				<div class="user_link fl">
-					<span>|</span>
-					<a href="user_center_info.html">用户中心</a>
-					<span>|</span>
-					<a href="cart.html">我的购物车</a>
-					<span>|</span>
-					<a href="user_center_order.html">我的订单</a>
-				</div>
-			</div>
-		</div>		
-	</div>
-
 	<div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="/static/images/logo.png"></a>
+		<a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
 		<div class="search_con fl">
 			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
 			<input type="button" class="input_btn fr" name="" value="搜索">
@@ -54,16 +27,16 @@
 				<h1>全部商品分类</h1>	
 				<span></span>			
 				<ul class="subnav">
-					<li><a href="#" class="fruit">新鲜水果</a></li>
-					<li><a href="#" class="seafood">海鲜水产</a></li>
-					<li><a href="#" class="meet">猪牛羊肉</a></li>
-					<li><a href="#" class="egg">禽类蛋品</a></li>
-					<li><a href="#" class="vegetables">新鲜蔬菜</a></li>
-					<li><a href="#" class="ice">速冻食品</a></li>
+					<li><a href="/list111/" class="fruit">新鲜水果</a></li>
+					<li><a href="/list211/" class="seafood">海鲜水产</a></li>
+					<li><a href="/list311/" class="meet">猪牛羊肉</a></li>
+					<li><a href="/list411/" class="egg">禽类蛋品</a></li>
+					<li><a href="/list511/" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="/list611/" class="ice">速冻食品</a></li>
 				</ul>
 			</div>
 			<ul class="navlist fl">
-				<li><a href="">首页</a></li>
+				<li><a href="/">首页</a></li>
 				<li class="interval">|</li>
 				<li><a href="">手机生鲜</a></li>
 				<li class="interval">|</li>
@@ -75,19 +48,19 @@
 	<div class="breadcrumb">
 		<a href="#">全部分类</a>
 		<span>></span>
-		<a href="#">新鲜水果</a>
+		<a href="/list111/">新鲜水果</a>
 		<span>></span>
 		<a href="#">商品详情</a>
 	</div>
 
 	<div class="goods_detail_con clearfix">
-		<div class="goods_detail_pic fl"><img src="/static/images/goods_detail.jpg"></div>
+		<div class="goods_detail_pic fl"><img src="/static/{{ good.gpic }}"></div>
 
 		<div class="goods_detail_list fr">
-			<h3>大兴大棚草莓</h3>
-			<p>草莓浆果柔软多汁，味美爽口，适合速冻保鲜贮藏。草莓速冻后，可以保持原有的色、香、味，既便于贮藏，又便于外销。</p>
+			<h3>{{ good.gtitle }}</h3>
+			<p>{{ good.gjianjie }}</p>
 			<div class="prize_bar">
-				<span class="show_pirze">¥<em>16.80</em></span>
+				<span class="show_pirze">¥<em>{{ good.gprice }}</em></span>
 				<span class="show_unit">单  位：500g</span>
 			</div>
 			<div class="goods_num clearfix">
@@ -98,7 +71,7 @@
 					<a href="javascript:;" class="minus fr">-</a>	
 				</div> 
 			</div>
-			<div class="total">总价：<em>16.80元</em></div>
+			<div class="total">总价：<em>元</em></div>
 			<div class="operate_btn">
 				<a href="javascript:;" class="buy_btn">立即购买</a>
 				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>				
@@ -111,16 +84,14 @@
 			<div class="new_goods">
 				<h3>新品推荐</h3>
 				<ul>
-					<li>
-						<a href="#"><img src="/static/images/goods/goods001.jpg"></a>
-						<h4><a href="#">进口柠檬</a></h4>
-						<div class="prize">￥3.90</div>
+                    {% for newgood in newgoods %}
+                    <li>
+						<a href="/good_detail{{ newgood.id }}/"><img src="/static/{{ newgood.gpic }}"></a>
+						<h4><a href="/good_detail{{ newgood.id }}/">{{ newgood.gtitle }}</a></h4>
+						<div class="prize">￥{{ newgood.gprice }}</div>
 					</li>
-					<li>
-						<a href="#"><img src="/static/images/goods/goods002.jpg"></a>
-						<h4><a href="#">玫瑰香葡萄</a></h4>
-						<div class="prize">￥16.80</div>
-					</li>
+                    {% endfor %}
+
 				</ul>
 			</div>
 		</div>
@@ -134,7 +105,7 @@
 			<div class="tab_content">
 				<dl>
 					<dt>商品详情：</dt>
-					<dd>草莓采摘园位于北京大兴区 庞各庄镇四各庄村 ，每年1月-6月面向北京以及周围城市提供新鲜草莓采摘和精品礼盒装草莓，草莓品种多样丰富，个大香甜。所有草莓均严格按照有机标准培育，不使用任何化肥和农药。草莓在采摘期间免洗可以直接食用。欢迎喜欢草莓的市民前来采摘，也欢迎各大单位选购精品有机草莓礼盒，有机草莓礼盒是亲朋馈赠、福利送礼的最佳选择。 </dd>
+					<dd>{{ good.gcontent|safe }} </dd>
 				</dl>
 			</div>
 

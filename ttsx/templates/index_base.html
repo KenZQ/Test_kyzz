@@ -2,13 +2,36 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<title>天天生鲜-{% block title %}{% endblock title  %}</title>
+	<title>天天生鲜-{% block title %}首页{% endblock title  %}</title>
 	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
 	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/static/js/login_status.js"></script>
 {% block script %}{% endblock script %}
 </head>
 <body>
+<div class="header_con">
+        <div class="header">
+            <div class="welcome fl">欢迎来到天天生鲜!</div>
+            <div class="fr">
+                <div class="login_info fl">
+                </div>
+                <div class="login_btn fl">
+                    <a href="/user/login/">登录</a>
+                    <span>|</span>
+                    <a href="/user/register/">注册</a>
+                </div>
+                <div class="user_link fl">
+                    <span>|</span>
+                    <a href="/user/user_center_info/">用户中心</a>
+                    <span>|</span>
+                    <a href="/cart/">我的购物车</a>
+                    <span>|</span>
+                    <a href="/detail/">我的订单</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {%  block body  %}
 
