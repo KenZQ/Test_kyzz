@@ -4,7 +4,7 @@ from .models import  *
 
 # Create your views here.
 def cart(request):
-    uid=request.session['user_id']
+    uid=request.session['pid']
     carts=CartInfo.objects.filter(user_id=uid)
     context={
         'title':'购物车',
@@ -14,7 +14,7 @@ def cart(request):
     return render(request, 'cart/cart.html',context)
 
 def add(request,gid,count):
-    uid=request.session['user_id']
+    uid=request.session['pid']
     gid=int(gid)
     count=int(count)
 
@@ -30,7 +30,7 @@ def add(request,gid,count):
     cart.save()
 
     if request.is_ajax():
-        count=CartInfo.objects.filter(user_id=request.session['user_id']).count()
+        count=CartInfo.objects.filter(user_id=request.session['pid']).count()
         return JsonResponse({'count':count})
     else:
         return credits('/cart/')
