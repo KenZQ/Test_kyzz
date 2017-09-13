@@ -68,7 +68,11 @@
 
             $('.num_show').blur(function () {
                count=$(this).val();
-               if(count<=0){
+               if(isNaN($(this).val())){
+                   $(this).val(1);
+                   count = 1;
+               }
+               else if(count<=0){
                    alert('已经最少了，再少就没了');
                    $(this).focus();
                    return;
