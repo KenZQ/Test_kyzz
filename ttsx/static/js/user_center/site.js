@@ -5,12 +5,12 @@
 $(function () {
     $.get('/user/getmsg/', function (data) {
 
-        if (data.name == '') {
-            $('#addr').empty().append('无')
+        if (data.name ) {
+            $('#addr').empty().append(data.addr + '　('+data.name + '收)　' + data.phone);
+
         }
         else {
-            $('#addr').empty().append(data.addr + '　('+data.name + '收)　' + data.phone
-        )
+            $('#addr').empty().append('无');
         }
     });
 });

@@ -37,15 +37,12 @@ def register_msg(request):
     request.session['user_name'] = new_user_name
     request.session['email'] = new_user_email
     new_user.save()
-    # return redirect('/user/send/?email=%s'%new_user_email)
-    # request.session['passwd'] = new_user_pwd
-    # return redirect('/login2/?user_name=%s&pwd=%s'%(new_user_name,new_user_pwd))
-    return redirect('/user/send/')
-
-
-def send(request):
-    task.send(request)
+    yzm = new_user_pwd[10:31]
+    task.send.delay(new_user.id,new_user_email,yzm)
     return render(request, 'user/login.html')
+
+
+
 
 
 # 登录
@@ -60,20 +57,20 @@ def verify_msg(request):
     #     return HttpResponse('验证码错误')
     user_name = dict.get('username')
     try:
-        document = UserInfo.objects.filter(isValid=True).get(uname=user_name)
+        user = UserInfo.objects.filter(isValid=True).get(uname=user_name)
     except:
         return HttpResponse('用户名不存在')
 
     upwd = dict.get('pwd').encode('utf-8')
     user_pwd = sha1(upwd).hexdigest()
 
-    if user_pwd != document.upwd:
+    if user_pwd != user.upwd:
         return HttpResponse('密码错误')
 
-    if not document.isActive:
+    if not user.isActive:
         return HttpResponse('未激活')
     request.session.set_expiry(600)
-    request.session['pid'] = document.id
+    request.session['pid'] = user.id
     # referer_web = request.META['HTTP_REFERER']
     try:
         referer_web = request.COOKIES['origin_addr']
@@ -85,15 +82,16 @@ def verify_msg(request):
 
 
 # 注册后提示激活
-def active(request):
+def active(request,id):
     try:
-        uname = request.session['user_name']
+        dict = request.GET
+        user = UserInfo.objects.filter(isValid=True).get(id=id)
+        if dict.get('yzm') == user.upwd[10:31]:
+            user.isActive = True
+            user.save()
+            return HttpResponse('成功激活,<a href="/user/login/">前往登录</a>')
     except:
-        return
-    user = UserInfo.objects.filter(isValid=True).get(uname=uname)
-    user.isActive = True
-    user.save()
-    return HttpResponse('成功激活')
+        pass
 
 
 # 判断是否已经登录
@@ -174,10 +172,12 @@ def getmsg(request):
 def top_area(request):
     try:
         id = request.session['pid']
-        user = UserAddressInfo.objects.get(user_id=id)
-        context = {'uname': user.uname}
-        return JsonResponse(context)
+        usermsg = UserInfo.objects.get(id=id)
+        context = {'uname': usermsg.uname}
+
     except:
-        return JsonResponse({'name':''})
+        context = {}
+
+    return JsonResponse(context)
 
 

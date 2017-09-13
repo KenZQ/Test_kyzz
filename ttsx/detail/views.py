@@ -14,7 +14,7 @@ from django.utils.datetime_safe import datetime
 
 # 提交订单视图
 @transaction.atomic
-@views.login
+@views.islogin
 def account(request):
     tran_id = transaction.savepoint()
 
@@ -58,7 +58,7 @@ def account(request):
 
     return redirect('/user/order/')
 
-@views.login
+@views.islogin
 def pay(request,oid):
     order = OrderInfo.objects.get(oid=oid)
     order.oIsPay = True
