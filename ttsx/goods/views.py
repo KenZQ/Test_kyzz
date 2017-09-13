@@ -12,7 +12,7 @@ def index(request):
     hot = GoodsInfo.objects.all().order_by('gclick')[0:4]
     # 获得分类下的点击商品,下面拿出来的是一个装有字典的列表，就是各个对象
     typelist = TypeInfo.objects.all()
-    context = {'guest_cart': 1, 'title': '首页', 'hot': hot, 'typelist':typelist}
+    context = {'guest_cart': 1, 'title': '首页', 'hot': hot, 'typelist': typelist}
 
     for i in range(len(typelist)):
         type = typelist[i]
@@ -44,15 +44,26 @@ def list(request, tid, sid, pindex):
     # 返回page对象，包含商品信息
     page = paginator.page(int(pindex))
     context = {'title': '商品列表', 'guest_cart': 1, 'page': page, 'paginator': paginator, 'typeinfo': type, 'sort': sid,
-               'news': news,'type_id':tid}
+               'news': news, 'type_id': tid}
     return render(request, 'goods/list.html', context)
 
 
-
-def detail(request,id):
+def detail(request, id):
     try:
         good = GoodsInfo.objects.get(id=id)
-        newgoods =  GoodsInfo.objects.filter(isDelete=False).order_by('-id')[0:2]
-        return render(request, 'goods/detail.html', {'good':good, 'newgoods':newgoods})
+        newgoods = GoodsInfo.objects.filter(isDelete=False).order_by('-id')[0:2]
+        return render(request, 'goods/detail.html', {'good': good, 'newgoods': newgoods})
     except:
         return HttpResponse('您的网络可能有问题')
+
+
+from haystack.views import SearchView
+
+
+class MySearchView(SearchView):
+    def extra_context(self):
+        context = super(MySearchView, self).extra_context()
+        # context['title'] = '搜索'
+        # context['guest_cart'] = 1
+        # context['cart_count'] = cart_count(self.request)
+        return context
