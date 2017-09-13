@@ -2,7 +2,7 @@
 {% block title %}
     登录
 {% endblock title %}
-{% block script %}<script type="text/javascript" src="/static/js/register.js"></script>{% endblock script %}
+{% block script %}{% endblock script %}
 
 {% block body %}
     <div class="login_top clearfix">
@@ -19,7 +19,7 @@
                     <a href="/user/register/">立即注册</a>
                 </div>
                 <div class="form_input">
-                    <form>
+                    <form method="post" action="/user/verify_msg/">
                         <input type="text" name="username" class="name_input" placeholder="请输入用户名">
                         <div class="user_error">输入错误</div>
                         <input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
