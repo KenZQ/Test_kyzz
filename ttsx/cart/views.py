@@ -14,5 +14,5 @@ def cart(request):
         'name':1,
         'carts':carts,
                }
-    return render(request,'cart/cart.html')
+    return render(request,'cart/cart.html',context)
 
