@@ -12,6 +12,5 @@ class UserAddressInfo(models.Model):
     uname=models.CharField(max_length=20)
     uaddress=models.CharField(max_length=100)
     uphone=models.CharField(max_length=11)
-
     user=models.ForeignKey('UserInfo')
 

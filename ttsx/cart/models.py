@@ -8,3 +8,4 @@ class CartInfo(models.Model):
     goods=models.ForeignKey('goods.GoodsInfo')
     count=models.IntegerField()
 
+
