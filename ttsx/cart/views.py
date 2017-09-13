@@ -3,11 +3,11 @@ from django.http import HttpResponse,JsonResponse
 from .models import  *
 
 # Create your views here.
-import user
+from user.views import islogin
 from cart.models import CartInfo
 
 
-
+@islogin
 def cart(request):
     uid=request.session['pid']
     carts=CartInfo.objects.filter(user_id=uid)
