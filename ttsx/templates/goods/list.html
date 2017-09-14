@@ -17,6 +17,7 @@
             $('.add_goods').click(function () {
                 var gid = $(this).attr('gid');
                 $.get('/cart/add'+gid+'_1/',function (data) {
+
                     var count = data.count;
                     $('.goods_count').html(count);
                 });

@@ -65,7 +65,7 @@ def verify_msg(request):
     if not user.isActive:
         return HttpResponse('未激活')
 
-    request.session.set_expiry(600)
+    request.session.set_expiry(900)
     request.session['pid'] = user.id
 
     referer_web = request.COOKIES['origin_addr']
