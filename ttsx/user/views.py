@@ -34,8 +34,6 @@ def register_msg(request):
     new_user.uname = new_user_name
     new_user.upwd = new_user_pwd
     new_user.uemail = new_user_email
-    request.session['user_name'] = new_user_name
-    request.session['email'] = new_user_email
     new_user.save()
     yzm = new_user_pwd[10:31]
     task.send.delay(new_user.id,new_user_email,yzm)
@@ -82,20 +80,20 @@ def active(request,id):
         if dict.get('yzm') == user.upwd[10:31]:
             user.isActive = True
             user.save()
-            return HttpResponse('成功激活,<a href="/user/login/">前往登录</a>')
+            return HttpResponse('成功激活,<a href="/">前往官网</a>')
     except:
         pass
 
 
 # 判断是否已经登录
 def islogin(fn):
-    def inner(request):
+    def inner(request,*args):
         try:
             if request.session['pid']:
                 pass
         except:
             return render(request, 'user/login.html')
-        return fn(request)
+        return fn(request,*args)
 
     return inner
 

@@ -12,7 +12,15 @@ def index(request):
     hot = GoodsInfo.objects.all().order_by('gclick')[0:4]
     # 获得分类下的点击商品,下面拿出来的是一个装有字典的列表，就是各个对象
     typelist = TypeInfo.objects.all()
-    context = {'guest_cart': 1, 'title': '首页', 'hot': hot, 'typelist': typelist}
+    #购物车的商品数量
+    try:
+        uid = request.session['pid']
+        carts = CartInfo.objects.filter(user_id=uid)
+    except:
+        carts = []
+
+    count = len(carts)
+    context = {'guest_cart': 1, 'title': '首页', 'hot': hot, 'typelist': typelist,'count':count}
 
     for i in range(len(typelist)):
         type = typelist[i]
