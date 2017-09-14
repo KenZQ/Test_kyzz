@@ -10,9 +10,19 @@
 {#        'cart_ids':','.join(cart_ids)#}
 {#    }#}
 {#    #}
-        $(function () {
+      $('#order_btn').click(function() {
+			localStorage.setItem('order_finish',2);
 
-        });
+			$('.popup_con').fadeIn('fast', function() {
+
+				setTimeout(function(){
+					$('.popup_con').fadeOut('fast',function(){
+						window.location.href = 'index.html';
+					});
+				},3000)
+
+			});
+		});
 
     </script>
 
@@ -90,8 +100,8 @@
 		{% for cart in carts %}
         <ul class="goods_list_td clearfix">
 			<li class="col01">{{ forloop.counter }}</li>
-			<li class="col02"><img src="static/images/{{ cart.goods.gpic }}"></li>
-			<li class="col03">{{ cart.goods.gtitle | truncatechars: '15'}}</li>
+			<li class="col02"><img src="static/images/{{ cart.goods.gpic | truncatechars :'15'}}"></li>
+			<li class="col03">{{ cart.goods.gtitle}}</li>
 			<li class="col04">500g</li>
 			<li class="col05">25.80元</li>
 			<li class="col06">{{ cart.count }}</li>
@@ -113,5 +123,5 @@
 	<div class="order_submit clearfix">
 		<a href="javascript:;" id="order_btn">提交订单</a>
 	</div>
-
+    </div>
 {% endblock body %}
