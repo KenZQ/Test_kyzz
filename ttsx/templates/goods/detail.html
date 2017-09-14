@@ -51,9 +51,9 @@
             });
             
             $('#add_cart').click(function(){
-                $.get('/cart/add{{ good.id }}'+ $num.val()+'/', function () {
+                $.get('/cart/add{{ good.id }}'+'_'+ $num.val()+'/', function () {
                     var gcount = parseInt($('.goods_count').text()) + 1;
-                    $('.goods_count').html(gcount);
+                    $('.goods_count').text(gcount);
                 })
             });
         });
@@ -85,14 +85,14 @@
                 <div class="num_name fl">数 量：</div>
                 <div class="num_add fl">
                     <input type="text" class="num_show fl" value="1">
-                    <a href="#" class="add fr">+</a>
-                    <a href="#" class="minus fr">-</a>
+                    <a href="javascript:;" class="add fr">+</a>
+                    <a href="javascript:;" class="minus fr">-</a>
                 </div>
             </div>
             <div class="total">总价：<em class="tprice">{{ good.gprice }}</em>元
                 <div class="operate_btn">
-                    <a href="" class="buy_btn">立即购买</a>
-                    <a href="" class="add_cart" id="add_cart">加入购物车</a>
+                    <a href="/cart/" class="buy_btn">立即购买</a>
+                    <a href="#" class="add_cart" id="add_cart">加入购物车</a>
                 </div>
             </div>
         </div>

@@ -12,6 +12,16 @@
             $(".pagenation").delegate('a', 'click', function () {
                 $(this).addClass('active').siblings().removeClass('active');
             });
+
+
+            $('.add_goods').click(function () {
+                var gid = $(this).attr('gid');
+                $.get('/cart/add'+gid+'_1/',function (data) {
+
+                    var count = data.count;
+                    $('.goods_count').html(count);
+                });
+            });
         });
     </script>
 {% endblock script %}
@@ -55,8 +65,8 @@
                         <h4><a href="/good_detail{{ good.id }}/">{{ good.gtitle }}</a></h4>
                         <div class="operate">
                             <span class="prize">￥{{ good.gprice }}</span>
-                            <span class="unit">{{ good.gprice }}/500g</span>
-                            <a href="#" class="add_goods" title="加入购物车"></a>
+                            <span class="unit">{{ good.gunit }}</span>
+                            <a href="#" gid='{{ good.id }}' class="add_goods" title="加入购物车"></a>
                         </div>
                     </li>
                 {% endfor %}
