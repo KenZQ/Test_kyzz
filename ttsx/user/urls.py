@@ -5,6 +5,8 @@ urlpatterns = [
     url('^register/$', views.register),
     url('^login/$', views.login),
     url('^verify_msg/$', views.verify_msg),
+    url('^verify_code/$', views.verify_code),
+    url('^yzm/$', views.yzm),
     url('^register_msg/$', views.register_msg),
     url('^isexit/$', views.isexit),
     url(r'^active(\d+)/$', views.active),
@@ -13,6 +15,7 @@ urlpatterns = [
     url('^exit/$', views.user_exit),
     url('^edit_addr_msg/$', views.edit_addr_msg),
     url('^getmsg/$', views.getmsg),
-    url('^top_area/$', views.top_area)
-
+    url('^top_area/$', views.top_area),
+    url('^reset/$', views.reset),
+    url('^reset_pwd/$', views.reset_pwd)
 ]
