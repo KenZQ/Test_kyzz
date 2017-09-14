@@ -47,7 +47,6 @@ def register_msg(request):
 def login(request):
     return render(request, 'user/login.html')
 
-
 # 登录验证
 def verify_msg(request):
     dict = request.POST

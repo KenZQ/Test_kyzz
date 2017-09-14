@@ -13,10 +13,10 @@ def cart(request):
     carts=CartInfo.objects.filter(user_id=uid)
     context={
         'title':'购物车',
-        'page_name':1,
-        'carts':carts
-    }
-    return render(request, 'cart/cart.html',context)
+        'name':1,
+        'carts':carts,
+               }
+    return render(request,'cart/cart.html',context)
 
 
 @islogin
@@ -63,4 +63,5 @@ def delete(request,cart_id):
     except Exception as e:
         data={'ok':0}
     return JsonResponse(data)
+
 
