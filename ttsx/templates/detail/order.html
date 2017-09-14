@@ -99,8 +99,9 @@
 		</ul>
 		{% for cart in carts %}
         <ul class="goods_list_td clearfix">
+        <input type="hidden" name="cid" value="{{ cart.id }}">
 			<li class="col01">{{ forloop.counter }}</li>
-			<li class="col02"><img src="static/images/{{ cart.goods.gpic | truncatechars :'15'}}"></li>
+			<li class="col02"><img src="static/images/{{ cart.goods.gpic | truncatechars:'15'}}"></li>
 			<li class="col03">{{ cart.goods.gtitle}}</li>
 			<li class="col04">500g</li>
 			<li class="col05">25.80元</li>

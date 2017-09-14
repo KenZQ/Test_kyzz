@@ -47,7 +47,7 @@ def order(request):
 @views.islogin
 def handle(request):
     tran_id = transaction.savepoint()
-    cart_ids = request.POST.get('cart_ids')
+    cart_ids = request.POST.get('cid')
     try:
         order = OrderInfo()
         now = datetime.now()
