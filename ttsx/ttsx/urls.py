@@ -23,6 +23,4 @@ urlpatterns = [
     url('^cart/', include('cart.urls')),
     url('^', include('goods.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
-
-
 ]

@@ -6,7 +6,6 @@ from django.shortcuts import render, redirect
 from . import task
 from .models import *
 
-
 from hashlib import sha1
 
 
@@ -38,14 +37,11 @@ def register_msg(request):
     request.session['user_name'] = new_user_name
     request.session['email'] = new_user_email
     new_user.save()
-    # return redirect('/user/send/?email=%s'%new_user_email)
-    # request.session['passwd'] = new_user_pwd
-    # return redirect('/login2/?user_name=%s&pwd=%s'%(new_user_name,new_user_pwd))
-    return redirect('/user/send/')
+    yzm = new_user_pwd[10:31]
+    task.send.delay(new_user.id,new_user_email,yzm)
+    return render(request, 'user/login.html')
 
-def send(request):
-    task.send(request)
-    return render(request,'user/login.html')
+
 
 
 
@@ -61,45 +57,45 @@ def verify_msg(request):
     #     return HttpResponse('验证码错误')
     user_name = dict.get('username')
     try:
-        document = UserInfo.objects.filter(isValid=True).get(uname=user_name)
+        user = UserInfo.objects.filter(isValid=True).get(uname=user_name)
     except:
         return HttpResponse('用户名不存在')
-
 
     upwd = dict.get('pwd').encode('utf-8')
     user_pwd = sha1(upwd).hexdigest()
 
-    if user_pwd != document.upwd:
+    if user_pwd != user.upwd:
         return HttpResponse('密码错误')
 
-    if not document.isActive:
+    if not user.isActive:
         return HttpResponse('未激活')
-    request.session.set_expiry(300)
-    request.session['pid'] = document.id
+    request.session.set_expiry(600)
+    request.session['pid'] = user.id
     # referer_web = request.META['HTTP_REFERER']
     try:
         referer_web = request.COOKIES['origin_addr']
         return redirect(referer_web)
     except:
         pass
+
     return redirect('/user/user_center_info/')
 
 
 # 注册后提示激活
-def active(request):
+def active(request,id):
     try:
-        uname = request.session['user_name']
+        dict = request.GET
+        user = UserInfo.objects.filter(isValid=True).get(id=id)
+        if dict.get('yzm') == user.upwd[10:31]:
+            user.isActive = True
+            user.save()
+            return HttpResponse('成功激活,<a href="/user/login/">前往登录</a>')
     except:
-        return
-    user = UserInfo.objects.filter(isValid=True).get(uname=uname)
-    user.isActive = True
-    user.save()
-    return HttpResponse('成功激活')
+        pass
 
 
 # 判断是否已经登录
 def islogin(fn):
-
     def inner(request):
         try:
             if request.session['pid']:
@@ -110,53 +106,59 @@ def islogin(fn):
 
     return inner
 
-
+# 用户中心，个人信息
 @islogin
 def user_center_info(request):
-    return render(request, 'user/user_center_info.html')
+    try:
+        usermsg = UserAddressInfo.objects.get(user_id=request.session['pid'])
+        name = usermsg.uname
+        addr = usermsg.uaddress
+        phone = usermsg.uphone
+        ulist = {'name': name, 'addr': addr, 'phone': phone}
+    except:
+        ulist = {}
+    return render(request, 'user/user_center_info.html',ulist)
 
 
 @islogin
 def user_center_site(request):
+
     return render(request, 'user/user_center_site.html')
 
-#用户中心，个人信息
-def get_user_msg(request):
-    try:
-        usermsg = UserAddressInfo.objects.get(user_id = request.session['pid'])
-        name = usermsg.uname
-        addr = usermsg.uaddress
-        phone = usermsg.uphone
-        ulist = {'name': name, 'addr': addr, 'phone': phone}
-    except:
-        ulist = {}
-    return JsonResponse(ulist)
+
+
+
+
+
 # 点击退出，清除ｓｅｓｓｉｏｎ
 def user_exit(request):
     request.session.flush()
-    return render(request, '/')
+    return redirect('/')
 
 # 编辑个人信息，如收货地址
+@islogin
 def edit_addr_msg(request):
     dict = request.POST
     user_id = request.session['pid']
     try:
-        usermsg = UserAddressInfo.objects.get(user_id = user_id)
+        usermsg = UserAddressInfo.objects.get(user_id=user_id)
     except:
         usermsg = UserAddressInfo()
     usermsg.uname = dict.get('recipients')
-    usermsg.uaddress =dict.get('addr')
+    usermsg.uaddress = dict.get('addr')
     usermsg.uphone = dict.get('phone')
     usermsg.user_id = user_id
 
     usermsg.save()
+    str1 = usermsg.uaddress +'  ('  +usermsg.uname + ' 收' + ')   '+ usermsg.uphone
+    context = {'addr':str1}
+    return render(request, 'user/user_center_site.html', context)
 
-    return render(request, 'user/user_center_site.html')
 
 # 获取个人地址信息
 def getmsg(request):
     try:
-        usermsg = UserAddressInfo.objects.get(user_id = request.session['pid'])
+        usermsg = UserAddressInfo.objects.get(user_id=request.session['pid'])
         name = usermsg.uname
         addr = usermsg.uaddress
         phone = usermsg.uphone
@@ -164,4 +166,18 @@ def getmsg(request):
     except:
         ulist = {}
     return JsonResponse(ulist)
+
+
+# 页面顶部是否登录的信息
+def top_area(request):
+    try:
+        id = request.session['pid']
+        usermsg = UserInfo.objects.get(id=id)
+        context = {'uname': usermsg.uname}
+
+    except:
+        context = {}
+
+    return JsonResponse(context)
+
 
