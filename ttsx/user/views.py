@@ -197,8 +197,42 @@ def top_area(request):
 def reset(request):
     return render(request, 'user/reset.html')
 
-def reset_pwd(request):
-    pass
+def reset_psw(request):
+    dict = request.POST
+    try:
+        name = dict.get('uname')
+        user = UserInfo.objects.get(uname=name)
+        uemail = user.uemail
+    except:
+        return HttpResponse('用户名不存在')
+    yzm = user.upwd[15:35]
+    task.reset.delay(user.id, uemail, yzm)
+    return HttpResponse('请到%s********邮箱重置密码'%(uemail[0:4]))
+
+def reset_page(request, id):
+    try:
+        dict = request.GET
+        user = UserInfo.objects.get(id=id)
+        if dict.get('yzm') == user.upwd[15:35]:
+            return render(request, 'user/reset_page.html',{'uid':id})
+    except:
+        return HttpResponse('重置失败')
+def reset_pwd(requset, id):
+    dict = requset.POST
+    try:
+        user = UserInfo.objects.get(id=id)
+        if user.uname !=  dict.get('uname'):
+            return HttpResponse('请输入正确的用户名')
+    except:
+        return HttpResponse('用户不存在')
+
+    pwd2 = dict.get('upsw')
+    pwd = pwd2.encode('utf-8')
+    new_pwd = sha1(pwd).hexdigest()
+    user.upwd = new_pwd
+    user.save()
+    return HttpResponse('重置成功,<a href="/">前往官网</a>')
+
 
 def verify_code(request):
     import random

@@ -4,20 +4,56 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        h3  {
+        body{
+            background: #f7fafc;
+        }
+        .logo{
+            text-align: center;
+            padding-top: 50px;
+        }
+        p{
+            font-size: 20px;
+        }
+        .test-nr{
             text-align: center;
         }
+
         form {
-            width: 100%;
+            width: 300px;
             margin: 50px auto;
         }
+        .test-sr{
+            text-indent: 10px;
+            width: 298px;
+            height: 50px;
+            border: 1px solid #d5d5d5;
+            border-radius: 4px;
+
+        }
+        .test-tj{
+            margin-top: 18px;
+            width: 300px;
+            height: 50px;
+            border: 0;
+            color: #fff;
+            font-size: 20px;
+            background: #55abed;
+            border-radius: 4px;
+            padding: 0;
+        }
     </style>
+
 </head>
 <body>
-<h3>重置密码</h3>
-<form action="/user/reset_psw/" method="post">
-    <input type="text" placeholder="请输入用户名">
-    <input type="submit" value="提交">
-</form>
+    <div class="logo">
+        <a href="/"><img src="/static/images/logo02.png" ></a>
+    </div>
+    <div class="test-nr">
+        <p>请您输入需要找回密码的账户名</p>
+        <form action="/user/reset_psw/" method="post">
+            <input class="test-sr" type="text" name='uname' placeholder="请输入用户名">
+            <input class="test-tj" type="submit" value="提交">
+        </form>
+    </div>
 </body>
 </html>

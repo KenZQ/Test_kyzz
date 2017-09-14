@@ -17,5 +17,7 @@ urlpatterns = [
     url('^getmsg/$', views.getmsg),
     url('^top_area/$', views.top_area),
     url('^reset/$', views.reset),
-    url('^reset_pwd/$', views.reset_pwd)
+    url('^reset_psw/$', views.reset_psw),
+    url(r'^reset_page(\d+)/$', views.reset_page),
+    url(r'^reset_pwd(\d+)/$', views.reset_pwd),
 ]
