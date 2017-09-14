@@ -18,6 +18,8 @@ def cart(request):
                }
     return render(request,'cart/cart.html',context)
 
+
+@islogin
 def add(request,gid,count):
     uid=request.session['pid']
     gid=int(gid)
@@ -40,6 +42,7 @@ def add(request,gid,count):
     else:
         return credits('/cart/')
 
+@islogin
 def edit(request,cart_id,count):
     try:
         cart=CartInfo.objects.get(pk=int(cart_id))
@@ -50,6 +53,8 @@ def edit(request,cart_id,count):
         data={'ok':count1}
     return JsonResponse(data)
 
+
+@islogin
 def delete(request,cart_id):
     try:
         cart=CartInfo.objects.get(pk=int(cart_id))

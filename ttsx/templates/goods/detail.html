@@ -10,7 +10,7 @@
             var price = parseFloat($('.price').text());
             $num.bind('input', 'propertychange', function () {
                 var count = parseInt($num.val());
-                if (isNaN($num.val()) || count != $num.val() || (count < 1) ){
+                if (isNaN($num.val()) || count != $num.val() || (count < 1)) {
                     $num.val(1);
                     count = 1;
                 }
@@ -29,9 +29,8 @@
                 if ($num.val() < 99) {
                     var count = parseInt($num.val()) + 1;
                     $num.val(count);
-
                 }
-                else{
+                else {
                     $num.val(99);
                     count = 99;
                 }
@@ -49,9 +48,14 @@
                     var tprice = price * count;
                     $total.text(tprice.toFixed(2));
                 }
-
             });
-
+            
+            $('#add_cart').click(function(){
+                $.get('/cart/add{{ good.id }}'+ $num.val()+'/', function () {
+                    var gcount = parseInt($('.goods_count').text()) + 1;
+                    $('.goods_count').html(gcount);
+                })
+            });
         });
     </script>
 {% endblock script %}
@@ -93,38 +97,38 @@
             </div>
         </div>
     </div>
-        <div class="main_wrap clearfix">
-            <div class="l_wrap fl clearfix">
-                <div class="new_goods">
-                    <h3>新品推荐</h3>
-                    <ul>
-                        {% for newgood in newgoods %}
-                            <li>
-                                <a href="/good_detail{{ newgood.id }}/"><img src="/static/{{ newgood.gpic }}"></a>
-                                <h4><a href="/good_detail{{ newgood.id }}/">{{ newgood.gtitle }}</a></h4>
-                                <div class="prize">￥{{ newgood.gprice }}</div>
-                            </li>
-                        {% endfor %}
+    <div class="main_wrap clearfix">
+        <div class="l_wrap fl clearfix">
+            <div class="new_goods">
+                <h3>新品推荐</h3>
+                <ul>
+                    {% for newgood in newgoods %}
+                        <li>
+                            <a href="/good_detail{{ newgood.id }}/"><img src="/static/{{ newgood.gpic }}"></a>
+                            <h4><a href="/good_detail{{ newgood.id }}/">{{ newgood.gtitle }}</a></h4>
+                            <div class="prize">￥{{ newgood.gprice }}</div>
+                        </li>
+                    {% endfor %}
 
-                    </ul>
-                </div>
-            </div>
-
-            <div class="r_wrap fr clearfix">
-                <ul class="detail_tab clearfix">
-                    <li class="active">商品介绍</li>
-                    <li>评论</li>
                 </ul>
-
-                <div class="tab_content">
-                    <dl>
-                        <dt>商品详情：</dt>
-                        <dd>{{ good.gcontent|safe }} </dd>
-                    </dl>
-                </div>
-
             </div>
         </div>
+
+        <div class="r_wrap fr clearfix">
+            <ul class="detail_tab clearfix">
+                <li class="active">商品介绍</li>
+                <li>评论</li>
+            </ul>
+
+            <div class="tab_content">
+                <dl>
+                    <dt>商品详情：</dt>
+                    <dd>{{ good.gcontent|safe }} </dd>
+                </dl>
+            </div>
+
+        </div>
+    </div>
 
 
 

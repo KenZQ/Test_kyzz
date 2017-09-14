@@ -14,7 +14,7 @@ from django.utils.datetime_safe import datetime
 # 显示订单
 from user.models import UserInfo
 
-@views.login
+@views.islogin
 def order(request):
     #查询用户对象
     user = UserInfo().objects.get(id=request.session['user_id'])
