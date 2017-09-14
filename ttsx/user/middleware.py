@@ -1,7 +1,6 @@
 class UserStatus:
     def process_request(self, request):
         pass
-
     def process_views(self, request, view_func, view_args, view_kwargs):
         pass
 

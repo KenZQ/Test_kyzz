@@ -17,7 +17,7 @@ from user.models import UserInfo
 @views.islogin
 def order(request):
     #查询用户对象
-    user = UserInfo().objects.get(id=request.session['user_id'])
+    user = UserInfo.objects.get(id=request.session['pid'])
     # 根据提交查询购物车信息
     cart_ids = request.GET.getlist('cart_id')
     cart_ids1 = [int(item) for item in cart_ids]
@@ -51,7 +51,7 @@ def handle(request):
     try:
         order = OrderInfo()
         now = datetime.now()
-        uid = request.session['user_id']
+        uid = request.session['pid']
         order_id = '%s%d'%(now.strftime('%Y%m%d%H%M%S'),uid)
         order.user_id = uid
         order.odate = now
@@ -86,7 +86,7 @@ def handle(request):
         print(e)
         transaction.savepoint_rollback(tran_id)
 
-    return redirect('/user/order/')
+    return redirect('/detail/order/')
 
 
 

@@ -89,13 +89,13 @@ def active(request,id):
 
 # 判断是否已经登录
 def islogin(fn):
-    def inner(request):
+    def inner(request,*args):
         try:
             if request.session['pid']:
                 pass
         except:
             return render(request, 'user/login.html')
-        return fn(request)
+        return fn(request,*args)
 
     return inner
 
