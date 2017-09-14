@@ -43,12 +43,9 @@ def register_msg(request):
 
 
 
-
-
 # 登录
 def login(request):
     return render(request, 'user/login.html')
-
 
 # 登录验证
 def verify_msg(request):
@@ -69,16 +66,12 @@ def verify_msg(request):
 
     if not user.isActive:
         return HttpResponse('未激活')
+
     request.session.set_expiry(600)
     request.session['pid'] = user.id
-    # referer_web = request.META['HTTP_REFERER']
-    try:
-        referer_web = request.COOKIES['origin_addr']
-        return redirect(referer_web)
-    except:
-        pass
 
-    return redirect('/user/user_center_info/')
+    referer_web = request.COOKIES['origin_addr']
+    return redirect(referer_web)
 
 
 # 注册后提示激活
@@ -124,10 +117,6 @@ def user_center_info(request):
 def user_center_site(request):
 
     return render(request, 'user/user_center_site.html')
-
-
-
-
 
 
 # 点击退出，清除ｓｅｓｓｉｏｎ

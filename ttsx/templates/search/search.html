@@ -1,0 +1,61 @@
+{% extends 'index_base.html' %}
+{% block title %} 商品搜索　{% endblock title %}
+{% block script %}
+{% endblock script %}
+{% block body %}
+  <div class="breadcrumb">
+        <a href="#">全部分类</a>
+        <span>></span>
+        <a href="">{{ typeinfo.ttitle }}</a>
+    </div>
+
+    <div class="main_wrap clearfix">
+
+        <div class="r_wrap fr clearfix">
+
+
+            <ul class="goods_type_list clearfix">
+                {% for good in page %}
+                    <li>
+                        <a href="/good_detail{{ good.object.id}}/"><img src='/static/{{ good.object.gpic }}/'></a>
+                        <h4><a href="/good_detail{{ good.object.id }}/">{{ good.object }}</a></h4>
+                        <div class="operate">
+                            <span class="prize">￥{{ good.object.gprice }}</span>
+                            <span class="unit">{{ good.object.gunit }}</span>
+                            <a href="#" class="add_goods" title="加入购物车"></a>
+                        </div>
+                    </li>
+                {% endfor %}
+
+
+            </ul>
+
+            <div class="pagenation">
+
+                {% if page.has_previous %}
+                    <a href="/search/?q={{ query }}&amp;page={{ page.previous_page_number }}">&lt;上一页</a>
+                {% else %}
+                    <a href="">&lt;上一页</a>
+                {% endif %}
+
+                {% for i in paginator.page_range %}
+                    {% if i == page.number %}
+                        <a href="/search/?q={{ query }}&amp;" class="active">{{ i }}</a>
+
+                    {% else %}
+                        <a href="/search/?q={{ query }}&amp;page={{ i }}" class="">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page.has_next %}
+                    <a href="/search/?q={{ query }}&amp;page={{ page.next_page_number }}">&lt;下一页</a>
+
+                {% else %}
+                    <a href="">&lt;下一页</a>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}

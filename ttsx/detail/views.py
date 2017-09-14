@@ -11,13 +11,42 @@ from user import views
 # Create your views here.
 from django.utils.datetime_safe import datetime
 
+# 显示订单
+from user.models import UserInfo
 
-# 提交订单视图
+@views.islogin
+def order(request):
+    #查询用户对象
+    user = UserInfo().objects.get(id=request.session['user_id'])
+    # 根据提交查询购物车信息
+    cart_ids = request.GET.getlist('cart_id')
+    cart_ids1 = [int(item) for item in cart_ids]
+    carts = CartInfo.objects.filter(id__in = cart_ids1)
+    # 构造传递到模板中的数据
+    context = {
+        'title':1,
+        'carts':carts,
+        'user':user,
+        'cart_ids':','.join(cart_ids)
+    }
+    return render(request,'detail/order.html',context)
+
+
+
+
+'''
+事物：一旦操作失败则全部回退
+1、创建订单对象
+2、判断商品的库存
+3、创建详单对象
+4、修改商品库存
+5、删除购物车
+'''
+# 处理订单视图
 @transaction.atomic
 @views.islogin
-def account(request):
+def handle(request):
     tran_id = transaction.savepoint()
-
     cart_ids = request.POST.get('cart_ids')
     try:
         order = OrderInfo()
@@ -37,18 +66,19 @@ def account(request):
             #查询购物车信息
             cart = CartInfo.objects.get(id = id1)
             goods = cart.goods
-            if goods.gkucun >= cart.count:
+            # 判断库存
+            if goods.gkucun >= cart.count:#库存大于等于购买数量，可以下单成功
                 # 减去库存
                 goods.gkucun = cart.goods.gkucun - cart.count
                 goods.save()
-
                 #填写订单信息
                 detail.goods_id = goods.id
                 detail.price = goods.gprice
                 detail.count = cart.count
                 detail.save()
+                # 删除购物车
                 cart.delete()
-            else:
+            else:#库存小于购买数量，不能购买成功
                 transaction.savepoint_rollback(tran_id)
                 return redirect('/cart/')
         transaction.savepoint_commit(tran_id)
@@ -57,6 +87,8 @@ def account(request):
         transaction.savepoint_rollback(tran_id)
 
     return redirect('/user/order/')
+
+
 
 @views.islogin
 def pay(request,oid):
