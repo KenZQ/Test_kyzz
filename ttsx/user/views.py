@@ -38,6 +38,16 @@ def register_msg(request):
     yzm = new_user_pwd[10:31]
     task.send.delay(new_user.id,new_user_email,yzm)
     return render(request, 'user/login.html')
+# '用户已经存在'
+def isexit(request):
+    new_user_name = request.GET.get('uname')
+    try:
+        if UserInfo.objects.get(uname=new_user_name):
+           msg = '用户名已存在'
+
+    except:
+        msg = ''
+    return JsonResponse({'msg': msg})
 
 
 

@@ -9,6 +9,7 @@ $(function(){
 
 	$('#user_name').blur(function() {
 		check_user_name();
+
 	});
 
 	$('#pwd').blur(function() {
@@ -51,6 +52,16 @@ $(function(){
 			$('#user_name').next().hide();
 			error_name = false;
 		}
+		uname = $('#user_name').val();
+		$.get('/user/isexit/?uname='+uname,function (data) {
+			if (data.msg){
+			$('#user_name').next().html(data.msg);
+			$('#user_name').next().show();
+			}
+			else{
+				$('#user_name').next().hide();
+			}
+        })
 	}
 
 	function check_pwd(){
