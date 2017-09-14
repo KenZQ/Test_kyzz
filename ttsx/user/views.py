@@ -43,12 +43,9 @@ def register_msg(request):
 
 
 
-
-
 # 登录
 def login(request):
     return render(request, 'user/login.html')
-
 
 # 登录验证
 def verify_msg(request):

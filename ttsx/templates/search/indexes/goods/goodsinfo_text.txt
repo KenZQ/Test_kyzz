@@ -1,2 +1,4 @@
 #指定索引的属性
 {{object.gcontent}}
+{{object.gjianjie}}
+{{object.gtitle}}
