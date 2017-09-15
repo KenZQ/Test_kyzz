@@ -12,23 +12,18 @@ from user import views
 from django.utils.datetime_safe import datetime
 
 # 显示订单
-from user.models import UserInfo
+from user.models import *
 
 @views.islogin
 def order(request):
-    #查询用户对象
-    user = UserInfo.objects.get(id=request.session['pid'])
-    # 根据提交查询购物车信息
+    user_addr = UserAddressInfo.objects.filter(user_id=request.session['pid'])
     cart_ids = request.GET.getlist('cart_id')
-    cart_ids1 = [int(item) for item in cart_ids]
-    carts = CartInfo.objects.filter(id__in = cart_ids1)
-    # 构造传递到模板中的数据
-    context = {
-        'title':1,
-        'carts':carts,
-        'user':user,
-        'cart_ids':','.join(cart_ids)
-    }
+    carts = []
+    for cart_id in cart_ids:
+        carts.append(CartInfo.objects.get(id=cart_id))
+
+    context = {'carts':carts, 'user':user_addr}
+
     return render(request,'detail/order.html',context)
 
 
