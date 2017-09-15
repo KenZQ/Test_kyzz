@@ -39,24 +39,27 @@ def register_msg(request):
     new_user.uemail = new_user_email
     new_user.save()
     yzm = new_user_pwd[10:31]
-    task.send.delay(new_user.id,new_user_email,yzm)
+    task.send.delay(new_user.id, new_user_email, yzm)
     return render(request, 'user/login.html')
+
+
 # '用户已经存在'
 def isexit(request):
     new_user_name = request.GET.get('uname')
     try:
         if UserInfo.objects.get(uname=new_user_name):
-           msg = '用户名已存在'
+            msg = '用户名已存在'
 
     except:
         msg = ''
 
     return JsonResponse({'msg': msg})
 
+
 def yzm(request):
     msg = ''
     try:
-        yzm =request.GET.get('yzm')
+        yzm = request.GET.get('yzm')
         if yzm.upper() != request.session['verifycode'].upper():
             msg = '验证码错误'
     except:
@@ -68,6 +71,7 @@ def yzm(request):
 # 登录
 def login(request):
     return render(request, 'user/login.html')
+
 
 # 登录验证
 def verify_msg(request):
@@ -93,13 +97,13 @@ def verify_msg(request):
 
     request.session.set_expiry(900)
     request.session['pid'] = user.id
-
     referer_web = request.COOKIES['origin_addr']
+
     return redirect(referer_web)
 
 
 # 注册后提示激活
-def active(request,id):
+def active(request, id):
     try:
         dict = request.GET
         user = UserInfo.objects.filter(isValid=True).get(id=id)
@@ -113,15 +117,16 @@ def active(request,id):
 
 # 判断是否已经登录
 def islogin(fn):
-    def inner(request,*args):
+    def inner(request, *args):
         try:
             if request.session['pid']:
                 pass
         except:
             return render(request, 'user/login.html')
-        return fn(request,*args)
+        return fn(request, *args)
 
     return inner
+
 
 # 用户中心，个人信息
 @islogin
@@ -134,12 +139,11 @@ def user_center_info(request):
         ulist = {'name': name, 'addr': addr, 'phone': phone}
     except:
         ulist = {}
-    return render(request, 'user/user_center_info.html',ulist)
+    return render(request, 'user/user_center_info.html', ulist)
 
 
 @islogin
 def user_center_site(request):
-
     return render(request, 'user/user_center_site.html')
 
 
@@ -147,6 +151,7 @@ def user_center_site(request):
 def user_exit(request):
     request.session.flush()
     return redirect('/')
+
 
 # 编辑个人信息，如收货地址
 @islogin
@@ -163,8 +168,8 @@ def edit_addr_msg(request):
     usermsg.user_id = user_id
 
     usermsg.save()
-    str1 = usermsg.uaddress +'  ('  +usermsg.uname + ' 收' + ')   '+ usermsg.uphone
-    context = {'addr':str1}
+    str1 = usermsg.uaddress + '  (' + usermsg.uname + ' 收' + ')   ' + usermsg.uphone
+    context = {'addr': str1}
     return render(request, 'user/user_center_site.html', context)
 
 
@@ -193,9 +198,11 @@ def top_area(request):
 
     return JsonResponse(context)
 
+
 # 重置密码
 def reset(request):
     return render(request, 'user/reset.html')
+
 
 def reset_psw(request):
     dict = request.POST
@@ -207,21 +214,24 @@ def reset_psw(request):
         return HttpResponse('用户名不存在')
     yzm = user.upwd[15:35]
     task.reset.delay(user.id, uemail, yzm)
-    return HttpResponse('请到%s********邮箱重置密码'%(uemail[0:4]))
+    return HttpResponse('请到%s********邮箱重置密码' % (uemail[0:4]))
+
 
 def reset_page(request, id):
     try:
         dict = request.GET
         user = UserInfo.objects.get(id=id)
         if dict.get('yzm') == user.upwd[15:35]:
-            return render(request, 'user/reset_page.html',{'uid':id})
+            return render(request, 'user/reset_page.html', {'uid': id})
     except:
         return HttpResponse('重置失败')
+
+
 def reset_pwd(requset, id):
     dict = requset.POST
     try:
         user = UserInfo.objects.get(id=id)
-        if user.uname !=  dict.get('uname'):
+        if user.uname != dict.get('uname'):
             return HttpResponse('请输入正确的用户名')
     except:
         return HttpResponse('用户不存在')
