@@ -52,7 +52,7 @@ def handle(request):
         order = OrderInfo()
         now = datetime.now()
         uid = request.session['pid']
-        order_id = '%s%d'%(now.strftime('%Y%m%d%H%M%S'),uid)
+        order.order_id = '%s%d'%(now.strftime('%Y%m%d%H%M%S'),uid)
         order.user_id = uid
         order.odate = now
         order.ototal = Decimal(request.POST.get('total'))
@@ -85,11 +85,10 @@ def handle(request):
     except Exception as e:
         print(e)
         transaction.savepoint_rollback(tran_id)
-
     return redirect('/detail/order/')
 
 
-
+# 用户订单详情
 @views.islogin
 def pay(request,oid):
     order = OrderInfo.objects.get(oid=oid)

@@ -28,11 +28,11 @@
         <li class="col05">小计</li>
         <li class="col06">操作</li>
     </ul>
+
+{#    加入购物车，点击去结算后，跳转下单页面，生成订单#}
     <form action="/detail/order/" method="get">
-    {% for cart in carts %}
 
-
-
+        {% for cart in carts %}
         <ul class="cart_list_td clearfix">
             <li class="col01"><input type="checkbox" name="cart_id" checked class="checked" value='{{ cart.id }}'></li>
             <li class="col02"><img src="/static/{{ cart.goods.gpic }}/"></li>

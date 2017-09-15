@@ -5,6 +5,6 @@ from . import views
 
 urlpatterns = [
     url('^order/$',views.order),
-    url('^$',views.handle),
-    url('^user_center_order/$',views.pay)#展示用户的订单
+    url('^$',views.order),
+    url('^user_center_order/$',views.pay),#展示用户的订单
 ]

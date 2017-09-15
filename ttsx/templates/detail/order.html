@@ -1,28 +1,8 @@
 {% extends 'index_base.html' %}
 
 {% block script %}
-{#    显示订单页面#}
     <script>
-{#         context = {#}
-{#        'title':1,#}
-{#        'carts':carts,#}
-{#        'user':user,#}
-{#        'cart_ids':','.join(cart_ids)#}
-{#    }#}
-{#    #}
-      $('#order_btn').click(function() {
-			localStorage.setItem('order_finish',2);
 
-			$('.popup_con').fadeIn('fast', function() {
-
-				setTimeout(function(){
-					$('.popup_con').fadeOut('fast',function(){
-						window.location.href = 'index.html';
-					});
-				},3000)
-
-			});
-		});
 
     </script>
 
@@ -30,37 +10,6 @@
 
 
 {% block body %}
-    <div class="header_con">
-		<div class="header">
-			<div class="welcome fl">欢迎来到天天生鲜!</div>
-			<div class="fr">
-				<div class="login_info fl">
-					欢迎您：<em>张 山</em>
-				</div>
-				<div class="login_btn fl">
-					<a href="login.html">登录</a>
-					<span>|</span>
-					<a href="register.html">注册</a>
-				</div>
-				<div class="user_link fl">
-					<span>|</span>
-					<a href="user_center_info.html">用户中心</a>
-					<span>|</span>
-					<a href="cart.html">我的购物车</a>
-					<span>|</span>
-					//
-			</div>
-		</div>
-	</div>
-
-	<div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
-		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;提交订单</div>
-		<div class="search_con fr">
-			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
-			<input type="button" class="input_btn fr" name="" value="搜索">
-		</div>
-	</div>
 
 	<h3 class="common_title">确认收货地址</h3>
 
@@ -69,7 +18,7 @@
 			<dt>寄送到：</dt>
 			<dd><input type="radio" name="" checked="">北京市 海淀区 东北旺西路8号中关村软件园 （李思 收） 182****7528</dd>
 		</dl>
-		<a href="user_center_site.html" class="edit_site">编辑收货地址</a>
+		<a href="/user/user_center_site/" class="edit_site">编辑收货地址</a>
 
 	</div>
 
@@ -87,6 +36,8 @@
 		</div>
 	</div>
 
+     <form action="/detail/order/" method="post">
+
 	<h3 class="common_title">商品列表</h3>
 
 	<div class="common_list_con clearfix">
@@ -97,19 +48,30 @@
 			<li class="col04">数量</li>
 			<li class="col05">小计</li>
 		</ul>
+
 		{% for cart in carts %}
         <ul class="goods_list_td clearfix">
+        {#        拿到购物车编号，对购物车进行查询#}
         <input type="hidden" name="cid" value="{{ cart.id }}">
+
 			<li class="col01">{{ forloop.counter }}</li>
+
 			<li class="col02"><img src="static/images/{{ cart.goods.gpic | truncatechars:'15'}}"></li>
-			<li class="col03">{{ cart.goods.gtitle}}</li>
-			<li class="col04">500g</li>
-			<li class="col05">25.80元</li>
+   '         {#			商品名称#}
+            <li class="col03">{{ cart.goods.gtitle}}</li>
+            {#            商品单位#}
+			<li class="col04">{{ cart.goods.gunit }}</li>
+            {#            商品单价#}
+			<li class="col05">{{ cart.goods.gprice }}</li>
+            {#            商品数量 #}
 			<li class="col06">{{ cart.count }}</li>
-			<li class="col07">25.80元</li>
+            {#            商品小计 #}
+			<li class="col07"> </li>
 		</ul>
         {% endfor %}
+
 	</div>
+
 
 	<h3 class="common_title">总金额结算</h3>
 
@@ -120,6 +82,8 @@
 			<div class="total_pay">实付款：<b>52.60元</b></div>
 		</div>
 	</div>
+
+     </form>
 
 	<div class="order_submit clearfix">
 		<a href="javascript:;" id="order_btn">提交订单</a>
