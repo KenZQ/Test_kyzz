@@ -132,19 +132,23 @@ def islogin(fn):
 @islogin
 def user_center_info(request):
     try:
-        usermsg = UserAddressInfo.objects.get(user_id=request.session['pid'])
-        name = usermsg.uname
-        addr = usermsg.uaddress
-        phone = usermsg.uphone
-        ulist = {'name': name, 'addr': addr, 'phone': phone}
+        usermsg = UserAddressInfo.objects.filter(user_id=request.session['pid']).order_by('-id')
+        context = {'user_msg': usermsg[0]}
     except:
-        ulist = {}
-    return render(request, 'user/user_center_info.html', ulist)
+        context = {}
+    return render(request, 'user/user_center_info.html', context)
 
 
 @islogin
 def user_center_site(request):
-    return render(request, 'user/user_center_site.html')
+
+    try:
+        usermsg = UserAddressInfo.objects.filter(user_id =request.session['pid'])
+        context = {'addrs': usermsg}
+    except:
+        context = {'addrs':''}
+
+    return render(request, 'user/user_center_site.html',context)
 
 
 # 点击退出，清除ｓｅｓｓｉｏｎ
@@ -158,32 +162,16 @@ def user_exit(request):
 def edit_addr_msg(request):
     dict = request.POST
     user_id = request.session['pid']
-    try:
-        usermsg = UserAddressInfo.objects.get(user_id=user_id)
-    except:
-        usermsg = UserAddressInfo()
+
+    usermsg = UserAddressInfo()
     usermsg.uname = dict.get('recipients')
     usermsg.uaddress = dict.get('addr')
     usermsg.uphone = dict.get('phone')
     usermsg.user_id = user_id
-
     usermsg.save()
-    str1 = usermsg.uaddress + '  (' + usermsg.uname + ' 收' + ')   ' + usermsg.uphone
-    context = {'addr': str1}
-    return render(request, 'user/user_center_site.html', context)
 
+    return redirect('/user/user_center_site/')
 
-# 获取个人地址信息
-def getmsg(request):
-    try:
-        usermsg = UserAddressInfo.objects.get(user_id=request.session['pid'])
-        name = usermsg.uname
-        addr = usermsg.uaddress
-        phone = usermsg.uphone
-        ulist = {'name': name, 'addr': addr, 'phone': phone}
-    except:
-        ulist = {}
-    return JsonResponse(ulist)
 
 
 # 页面顶部是否登录的信息

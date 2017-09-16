@@ -1,7 +1,6 @@
 {% extends 'usercenter_login_status.html' %}
 
 {% block script %}
-    <script type="text/javascript" src="/static/js/user_center/site.js"></script>
 {% endblock script %}
 {% block body %}
     <div class="search_bar clearfix">
@@ -25,10 +24,14 @@
         <div class="right_content clearfix">
             <h3 class="common_title2">收货地址</h3>
             <div class="site_con">
-                <dl>
-                    <dt>当前地址：</dt>
-                    <dd id="addr"> </dd>
-                </dl>
+                {% for addr in addrs %}
+
+                    <dl>
+                        <dt></dt>
+                        <dd id="addr">{{ addr.uaddress }} &nbsp;&nbsp;({{ addr.uname }}收) &nbsp;&nbsp;{{ addr.uphone }}</dd>
+                    </dl>
+                {% endfor %}
+
             </div>
             <h3 class="common_title2">编辑地址</h3>
             <div class="site_con">

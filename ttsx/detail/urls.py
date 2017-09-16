@@ -6,5 +6,6 @@ from . import views
 urlpatterns = [
     url('^order/$',views.order),
     url('^handle/$',views.handle),
-    url(r'^user_center_order(\d*)/$', views.user_center_order)
+    url('^buy/$', views.buy),
+    url(r'^user_center_order(\d*)/$', views.user_center_order),
 ]

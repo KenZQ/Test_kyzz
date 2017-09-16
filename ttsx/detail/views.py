@@ -27,6 +27,15 @@ def order(request):
 
     return render(request,'detail/order.html',context)
 
+@views.islogin
+def buy(request):
+    user_addr = UserAddressInfo.objects.filter(user_id=request.session['pid'])
+    cart_id = request.session['cart_id']
+    cart = CartInfo.objects.get(id=cart_id)
+    carts = [cart]
+    context = {'carts':carts, 'user':user_addr}
+
+    return render(request,'detail/order.html',context)
 
 
 
@@ -77,6 +86,8 @@ def handle(request):
         c.delete()
     transaction.savepoint_commit(tran_id)
     return redirect('/detail/user_center_order1/')
+
+
 
 def user_center_order(request,pindex):
 
