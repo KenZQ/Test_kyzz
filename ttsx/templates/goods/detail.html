@@ -51,9 +51,9 @@
             });
             
             $('#add_cart').click(function(){
-                $.get('/cart/add{{ good.id }}'+ $num.val()+'/', function () {
+                $.get('/cart/add{{ good.id }}'+'_'+ $num.val()+'/', function () {
                     var gcount = parseInt($('.goods_count').text()) + 1;
-                    $('.goods_count').html(gcount);
+                    $('.goods_count').text(gcount);
                 })
             });
         });
@@ -70,6 +70,8 @@
         <span>></span>
         <a href="">商品详情</a>
     </div>
+    <form action="/cart/buy/" method="post">
+        <input type="text" name="good_id" value="{{ good.id }}" style="display: none">
 
     <div class="goods_detail_con clearfix">
         <div class="goods_detail_pic fl"><img src="/static/{{ good.gpic }}"></div>
@@ -84,19 +86,22 @@
             <div class="goods_num clearfix">
                 <div class="num_name fl">数 量：</div>
                 <div class="num_add fl">
-                    <input type="text" class="num_show fl" value="1">
-                    <a href="#" class="add fr">+</a>
-                    <a href="#" class="minus fr">-</a>
+                    <input type="text" class="num_show fl" name="good_count" value="1">
+                    <a href="javascript:;" class="add fr">+</a>
+                    <a href="javascript:;" class="minus fr">-</a>
                 </div>
             </div>
             <div class="total">总价：<em class="tprice">{{ good.gprice }}</em>元
                 <div class="operate_btn">
-                    <a href="" class="buy_btn">立即购买</a>
-                    <a href="" class="add_cart" id="add_cart">加入购物车</a>
+
+
+                    <input type="submit" name="" class="buy_btn" value="立即购买" style="cursor:pointer">
+                    <a href="#" class="add_cart" id="add_cart">加入购物车</a>
                 </div>
+
             </div>
         </div>
-    </div>
+    </div> </form>
     <div class="main_wrap clearfix">
         <div class="l_wrap fl clearfix">
             <div class="new_goods">

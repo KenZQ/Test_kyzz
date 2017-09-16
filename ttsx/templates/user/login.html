@@ -2,7 +2,33 @@
 {% block title %}
     登录
 {% endblock title %}
-{% block script %}{% endblock script %}
+{% block script %}
+    <script>
+    $(function () {
+            //验证码
+            $('#change_img').css('cursor', 'pointer').click(function () {
+                $.get('/user/verify_code/', function () {
+                    $('.con img').empty();
+                    $('.con img').attr('src',$('.con img').attr('src')+1);
+
+                });
+            });
+              //验证码
+    $('#yzm').blur(function () {
+        var yzm = $('#yzm').val();
+        $.get('/user/yzm/?yzm=' + yzm, function (data) {
+            if (data.msg) {
+                $('#yzm').next().html(data.msg);
+                $('#yzm').next().show();
+            }
+            else {
+                $('#yzm').next().hide();
+            }
+        })
+    });
+        })
+    </script>
+{% endblock script %}
 
 {% block body %}
     <div class="login_top clearfix">
@@ -24,11 +50,21 @@
                         <div class="user_error">输入错误</div>
                         <input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
                         <div class="pwd_error">输入错误</div>
+                        <div class="con">
+                        <input type="text" name="test" id="yzm" placeholder="验证码:">
+                            <span id="yzm_msg"></span>
+                        <img src="/user/verify_code/?" alt="">
+                        <span id="change_img"> 看不见，换一张&nbsp;&nbsp;</span>
+                        </div>
+
                         <div class="more_input clearfix">
                             <input type="checkbox" name="">
                             <label>记住用户名</label>
-                            <a href="#">忘记密码</a>
+                            <a href="/user/reset/">忘记密码</a>
                         </div>
+
+
+
                         <input type="submit" name="" value="登录" class="input_submit">
                     </form>
                 </div>

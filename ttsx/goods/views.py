@@ -12,7 +12,15 @@ def index(request):
     hot = GoodsInfo.objects.all().order_by('gclick')[0:4]
     # 获得分类下的点击商品,下面拿出来的是一个装有字典的列表，就是各个对象
     typelist = TypeInfo.objects.all()
-    context = {'guest_cart': 1, 'title': '首页', 'hot': hot, 'typelist': typelist}
+    #购物车的商品数量
+    try:
+        uid = request.session['pid']
+        carts = CartInfo.objects.filter(user_id=uid)
+    except:
+        carts = []
+
+    count = len(carts)
+    context = {'hot': hot, 'typelist': typelist,'count':count}
 
     for i in range(len(typelist)):
         type = typelist[i]
@@ -43,16 +51,35 @@ def list(request, tid, sid, pindex):
     paginator = Paginator(good_list, 10)
     # 返回page对象，包含商品信息
     page = paginator.page(int(pindex))
-    context = {'title': '商品列表', 'guest_cart': 1, 'page': page, 'paginator': paginator, 'typeinfo': type, 'sort': sid,
-               'news': news, 'type_id': tid}
+
+    #购物车的商品数量
+    try:
+        uid = request.session['pid']
+        carts = CartInfo.objects.filter(user_id=uid)
+    except:
+        carts = []
+    count = len(carts)
+
+    context = {'page': page, 'paginator': paginator, 'typeinfo': type, 'sort': sid,
+               'news': news, 'type_id': tid, 'count':count}
     return render(request, 'goods/list.html', context)
 
 
 def detail(request, id):
+
+    #购物车的商品数量
+    try:
+        uid = request.session['pid']
+        carts = CartInfo.objects.filter(user_id=uid)
+    except:
+        carts = []
+
+    count = len(carts)
+
     try:
         good = GoodsInfo.objects.get(id=id)
         newgoods = GoodsInfo.objects.filter(isDelete=False).order_by('-id')[0:2]
-        return render(request, 'goods/detail.html', {'good': good, 'newgoods': newgoods})
+        return render(request, 'goods/detail.html', {'good': good, 'newgoods': newgoods, 'count':count})
     except:
         return HttpResponse('您的网络可能有问题')
 
