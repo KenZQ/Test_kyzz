@@ -78,8 +78,8 @@ def detail(request, id):
     try:
         good = GoodsInfo.objects.get(id=id)
         newgoods = GoodsInfo.objects.filter(isDelete=False).order_by('-id')[0:2]
-        # return render(request, 'goods/detail.html', {'good': good, 'newgoods': newgoods, 'count':count})
-        response = render_to_response('goods/detail.html', {'good': good, 'newgoods': newgoods, 'count': count})
+        response=  render(request, 'goods/detail.html', {'good': good, 'newgoods': newgoods, 'count':count})
+        # response = render_to_response('goods/detail.html', {'good': good, 'newgoods': newgoods, 'count': count})
 
         if 'ghistory' not in request.COOKIES:
             a = '%s+'%good.id
