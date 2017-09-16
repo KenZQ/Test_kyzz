@@ -125,7 +125,7 @@ def verify_fail(request):
     return render(request, 'user/verify_fail.html')
 
 
-# 注册后提示激活
+#注册后提示激活
 def active(request, id):
     try:
         dict = request.GET
@@ -171,6 +171,7 @@ def user_center_site(request):
         context = {'addrs': ''}
 
     return render(request, 'user/user_center_site.html', context)
+
 
 
 # 点击退出，清除ｓｅｓｓｉｏｎ
