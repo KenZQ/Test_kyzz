@@ -319,8 +319,9 @@ html,body{height:100%}
 	float: right;
 }
 .con span{
-	color:#e0e0e0;
+	color:black;
 	float: right;
+
 }
 #yzm_msg{
 	position: absolute;  left:0;top:36px;

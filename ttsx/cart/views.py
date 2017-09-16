@@ -12,10 +12,12 @@ from goods.models import *
 def cart(request):
     uid = request.session['pid']
     carts = CartInfo.objects.filter(user_id=uid)
+    count = carts.count
     context = {
         'title': '购物车',
         'name': 1,
         'carts': carts,
+        'count':count,
     }
     return render(request, 'cart/cart.html', context)
 
@@ -38,10 +40,10 @@ def add(request, gid, count):
     cart.save()
 
     if request.is_ajax():
-        count = CartInfo.objects.filter(user_id=request.session['pid']).count()
-        return JsonResponse({'count': count})
-    else:
-        return credits('/cart/')
+         count = CartInfo.objects.filter(user_id=request.session['pid']).count()
+         return JsonResponse({'count': count})
+
+    return render(request)
 
 
 @islogin

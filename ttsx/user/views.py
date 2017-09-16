@@ -1,8 +1,7 @@
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
-from django.conf import settings
-from django.core.mail import send_mail
+
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
@@ -70,36 +69,60 @@ def yzm(request):
 
 # 登录
 def login(request):
-    return render(request, 'user/login.html')
+    uname = request.COOKIES.get('uname', '')
+    context = {
+        'uname': uname,
+        'error': 0,
+    }
+    return render(request, 'user/login.html', context)
 
 
 # 登录验证
 def verify_msg(request):
     dict = request.POST
 
-    if dict.get('test').upper() != request.session['verifycode'].upper():
-        return HttpResponse('验证码错误')
-
     user_name = dict.get('username')
+
     try:
         user = UserInfo.objects.filter(isValid=True).get(uname=user_name)
     except:
         return HttpResponse('用户名不存在')
-
+    # if dict.get('test').upper() != request.session['verifycode'].upper():
+    #     return HttpResponse('验证码错误')
     upwd = dict.get('pwd').encode('utf-8')
     user_pwd = sha1(upwd).hexdigest()
 
-    if user_pwd != user.upwd:
-        return HttpResponse('密码错误')
-
     if not user.isActive:
-        return HttpResponse('未激活')
+        context = {
+            'error': 1,
+            'uname': user_name,
+        }
+        return render(request, 'user/login.html', context)
+
+
+    if user_pwd != user.upwd:
+        context = {
+            'error': 2,
+            'uname': user_name
+        }
+        return render(request, 'user/login.html', context)
 
     request.session.set_expiry(900)
     request.session['pid'] = user.id
-    referer_web = request.COOKIES['origin_addr']
 
-    return redirect(referer_web)
+    referer_web = request.session.get('prev_page', '/user/user_center_info/')
+    uname = dict.get('remember', '0')
+    response = redirect(referer_web)
+    if uname == '1':
+        response.set_cookie('uname', user_name, expires=86400 * 14)
+    else:
+        response.set_cookie('uname', '', expires=-1)
+
+    return response
+
+
+def verify_fail(request):
+    return render(request, 'user/verify_fail.html')
 
 
 # 注册后提示激活
@@ -141,14 +164,13 @@ def user_center_info(request):
 
 @islogin
 def user_center_site(request):
-
     try:
-        usermsg = UserAddressInfo.objects.filter(user_id =request.session['pid'])
+        usermsg = UserAddressInfo.objects.filter(user_id=request.session['pid'])
         context = {'addrs': usermsg}
     except:
-        context = {'addrs':''}
+        context = {'addrs': ''}
 
-    return render(request, 'user/user_center_site.html',context)
+    return render(request, 'user/user_center_site.html', context)
 
 
 # 点击退出，清除ｓｅｓｓｉｏｎ
@@ -171,7 +193,6 @@ def edit_addr_msg(request):
     usermsg.save()
 
     return redirect('/user/user_center_site/')
-
 
 
 # 页面顶部是否登录的信息

@@ -5,6 +5,7 @@ urlpatterns = [
     url('^register/$', views.register),
     url('^login/$', views.login),
     url('^verify_msg/$', views.verify_msg),
+    url('^verify_fail/$', views.verify_fail),
     url('^verify_code/$', views.verify_code),
     url('^yzm/$', views.yzm),
     url('^register_msg/$', views.register_msg),
