@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 
 from . import task
 from .models import *
-
+from goods.models import *
 from hashlib import sha1
 
 
@@ -157,7 +157,16 @@ def islogin(fn):
 def user_center_info(request):
     try:
         usermsg = UserAddressInfo.objects.filter(user_id=request.session['pid']).order_by('-id')
-        context = {'user_msg': usermsg[0]}
+
+        glist = []
+        if 'ghistory' in request.COOKIES:
+            a = request.COOKIES['ghistory']
+            import re
+            goodIds = re.split(r'\+',a)
+            for pk in goodIds[:5]:
+                good = GoodsInfo.objects.get(id=pk)
+                glist.append(good)
+        context = {'user_msg': usermsg[0], 'glist':glist}
     except:
         context = {}
     return render(request, 'user/user_center_info.html', context)
