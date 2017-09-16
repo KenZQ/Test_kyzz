@@ -10,6 +10,7 @@ $(function () {
             $('.login_info').css('display', 'block');
         }
         else {
+            $('.login_info').empty().prepend('<a href="/user/login/">登录</a> <span>|</span> <a href="/user/register/">注册</a>');
             $('.login_btn').css('display', 'block');
             $('.login_info').css('display', 'none');
         }

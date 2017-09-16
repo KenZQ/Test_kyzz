@@ -109,6 +109,7 @@ def verify_msg(request):
 
     request.session.set_expiry(900)
     request.session['pid'] = user.id
+    request.session['uname'] = user_name
 
     referer_web = request.session.get('prev_page', '/user/user_center_info/')
     uname = dict.get('remember', '0')

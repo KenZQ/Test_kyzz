@@ -8,12 +8,16 @@ urlpatterns = [
 ]
 
 '''
+import re
 
 
 class UserStatus:
 
     def process_view(self, request, view_func, view_args, view_kwargs):
-
+        try:
+            add = re.match(r"/cart/add(\d+)_(\d+)/", request.path).group()
+        except:
+            add = ''
         no_path = [
             '/user/register/',
             '/user/register_msg/',
@@ -26,10 +30,11 @@ class UserStatus:
             '/user/isexit/',
             '/user/yzm/',
             '/user/top_area/',
-
+            add,
         ]
-        if request.path not in no_path:
+        if request.path not in no_path :
             request.session['prev_page'] = request.get_full_path()
+
 
 
     # def process_response(self, request, response):
