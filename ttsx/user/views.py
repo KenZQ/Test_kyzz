@@ -74,7 +74,7 @@ def verify_msg(request):
     return redirect(referer_web)
 
 
-# 注册后提示激活
+# 注册后提示激活,激活后登录
 def active(request,id):
     try:
         dict = request.GET
@@ -115,7 +115,6 @@ def user_center_info(request):
 
 @islogin
 def user_center_site(request):
-
     return render(request, 'user/user_center_site.html')
 
 
