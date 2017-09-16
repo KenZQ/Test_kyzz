@@ -20,4 +20,5 @@ urlpatterns = [
     url('^reset_psw/$', views.reset_psw),
     url(r'^reset_page(\d+)/$', views.reset_page),
     url(r'^reset_pwd(\d+)/$', views.reset_pwd),
+    url(r'^addr_del(\d+)', views.addr_del)
 ]

@@ -255,6 +255,13 @@ def reset_pwd(requset, id):
     return HttpResponse('重置成功,<a href="/">前往官网</a>')
 
 
+
+# 地址删除
+def addr_del(request, id):
+    addr = UserAddressInfo.objects.filter(id =id)
+    addr[0].delete()
+    return redirect('/user/user_center_site/')
+
 def verify_code(request):
     import random
 
