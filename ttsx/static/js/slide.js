@@ -19,14 +19,14 @@ $(function(){
 		$li.appendTo($('.points'));
 	});
 	$points = $('.points li');
-	timer = setInterval(autoplay,4000);
+	timer = setInterval(autoplay,2000);
 
 	$('.slide').mouseenter(function() {
 		clearInterval(timer);
 	});
 
 	$('.slide').mouseleave(function() {
-		timer = setInterval(autoplay,4000);
+		timer = setInterval(autoplay,2000);
 	});
 
 	function autoplay(){
@@ -119,7 +119,7 @@ $(function(){
 		else
 		{			
 			$slides.eq(nowli).css({left:-760});			
-			$slides.eq(prevli).animate({left:760},800,'easeOutExpo');	
+			$slides.eq(prevli).animate({left:760},800,'easeOutExpo');
 			$slides.eq(nowli).animate({left:0},800,'easeOutExpo',function(){
 				ismove = false;
 			});

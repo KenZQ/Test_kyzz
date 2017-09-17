@@ -1,22 +1,6 @@
 {% extends 'usercenter_login_status.html' %}
-{% block title %}购物车{% endblock title %}
-{% block script %}
-    <script src="/static/js/cart.js"></script>
-{% endblock script %}
-
-{% block body %}
-
-
-    <div class="search_bar clearfix">
-        <a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
-        <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;购物车</div>
-        <div class="search_con fr">
-            <form action="/search/" method="get" name="search">
-                <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
-                <input type="submit" class="input_btn fr" name="" value="搜索">
-            </form>
-        </div>
-    </div>
+{% block script %}<script src="/static/js/cart.js"></script>{% endblock script %}
+{% block cart %}
 
     <div class="total_count">全部商品<em>{{ carts|length }}</em>件</div>
     <ul class="cart_list_th clearfix">
@@ -61,4 +45,4 @@
             <li class="col04"><input type="submit" value="去结算"></li>
         </ul>
     </form>
-{% endblock body %}
+{% endblock cart %}

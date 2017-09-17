@@ -1,7 +1,4 @@
 {% extends 'index_base.html' %}
-{% block title %}
-    商品详细
-{% endblock title %}
 {% block script %}
     <script>
         $(function () {
@@ -37,8 +34,6 @@
 
                 var tprice = price * count;
                 $total.text(tprice.toFixed(2));
-
-
             });
 
             $('.minus').click(function () {
@@ -51,9 +46,8 @@
             });
             
             $('#add_cart').click(function(){
-                $.get('/cart/add{{ good.id }}'+'_'+ $num.val()+'/', function () {
-                    var gcount = parseInt($('.goods_count').text()) + 1;
-                    $('.goods_count').text(gcount);
+                $.get('/cart/add{{ good.id }}'+'_'+ $num.val()+'/', function (data) {
+                    $('.goods_count').text(data.count);
                 })
             });
         });
@@ -61,7 +55,7 @@
 {% endblock script %}
 
 
-{% block body %}
+{% block content %}
 
     <div class="breadcrumb">
         <a href="/">全部分类</a>
@@ -81,7 +75,7 @@
             <p>{{ good.gjianjie }}</p>
             <div class="prize_bar">
                 <span class="show_pirze">¥<em class="price">{{ good.gprice }}</em></span>
-                <span class="show_unit">单  位：500g</span>
+                <span class="show_unit">单  位：{{ good.gunit }}</span>
             </div>
             <div class="goods_num clearfix">
                 <div class="num_name fl">数 量：</div>
@@ -111,7 +105,7 @@
             <div class="new_goods">
                 <h3>新品推荐</h3>
                 <ul>
-                    {% for newgood in newgoods %}
+                    {% for newgood in news %}
                         <li>
                             <a href="/good_detail{{ newgood.id }}/"><img src="/static/{{ newgood.gpic }}"></a>
                             <h4><a href="/good_detail{{ newgood.id }}/">{{ newgood.gtitle }}</a></h4>
@@ -142,4 +136,4 @@
 
 
 
-{% endblock body %}
+{% endblock content %}

@@ -23,7 +23,7 @@ def order(request):
     for cart_id in cart_ids:
         carts.append(CartInfo.objects.get(id=cart_id))
 
-    context = {'carts':carts, 'user':user_addr}
+    context = {'carts':carts, 'user':user_addr, 'title':'订单提交'}
 
     return render(request,'detail/order.html',context)
 
@@ -98,8 +98,8 @@ def user_center_order(request,pindex):
     p = Paginator(orders,3)
     pIndex = int(pindex)
     list2 = p.page(pIndex)
-
-    return render(request, 'detail/user_center_order.html', {'list': list2,'prange':p.page_range})
+    context = {'list': list2,'prange':p.page_range,'title':'个人订单'}
+    return render(request, 'detail/user_center_order.html', context)
 
 
 

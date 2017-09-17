@@ -2,25 +2,9 @@
 
 {% block script %}
 {% endblock script %}
-{% block body %}
-    <div class="search_bar clearfix">
-        <a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
-        <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
-        <div class="search_con fr">
-            <input type="text" class="input_text fl" name="" placeholder="搜索商品">
-            <input type="button" class="input_btn fr" name="" value="搜索">
-        </div>
-    </div>
+{% block content %}
 
-    <div class="main_con clearfix">
-        <div class="left_menu_con clearfix">
-            <h3>用户中心</h3>
-            <ul>
-                <li><a href="/user/user_center_info/">· 个人信息</a></li>
-                <li><a href="/detail/user_center_order/">· 全部订单</a></li>
-                <li><a href="/user/user_center_site/" class="active">· 收货地址</a></li>
-            </ul>
-        </div>
+
         <div class="right_content clearfix">
             <h3 class="common_title2">收货地址</h3>
             <div class="site_con">
@@ -58,7 +42,7 @@
                 </form>
             </div>
         </div>
-    </div>
 
 
-{% endblock body %}
+
+{% endblock content %}

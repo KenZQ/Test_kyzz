@@ -15,7 +15,7 @@ def cart(request):
     count = carts.count
     context = {
         'title': '购物车',
-        'name': 1,
+        'hascart': 2,
         'carts': carts,
         'count':count,
     }
@@ -39,10 +39,10 @@ def add(request, gid, count):
         cart.count = count
     cart.save()
 
-    if request.is_ajax():
-         count = CartInfo.objects.filter(user_id=request.session['pid']).count()
-         return JsonResponse({'count': count})
-    return
+
+    count = CartInfo.objects.filter(user_id=request.session['pid']).count()
+    return JsonResponse({'count': count})
+
 
 
 @islogin

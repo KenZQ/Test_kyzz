@@ -72,7 +72,7 @@ def login(request):
     uname = request.COOKIES.get('uname', '')
     context = {
         'uname': uname,
-        'error': 0,
+        'error': 3,
     }
     return render(request, 'user/login.html', context)
 
@@ -161,12 +161,11 @@ def user_center_info(request):
         glist = []
         if 'ghistory' in request.COOKIES:
             a = request.COOKIES['ghistory']
-            import re
-            goodIds = re.split(r'\+',a)
-            for pk in goodIds[:5]:
+            goodIds = a.split('+')
+            for pk in goodIds:
                 good = GoodsInfo.objects.get(id=pk)
                 glist.append(good)
-        context = {'user_msg': usermsg[0], 'glist':glist}
+        context = {'user_msg': usermsg[0], 'glist':glist, 'point':1}
     except:
         context = {}
     return render(request, 'user/user_center_info.html', context)
@@ -176,9 +175,9 @@ def user_center_info(request):
 def user_center_site(request):
     try:
         usermsg = UserAddressInfo.objects.filter(user_id=request.session['pid'])
-        context = {'addrs': usermsg}
+        context = {'addrs': usermsg,'point':3}
     except:
-        context = {'addrs': ''}
+        context = {'addrs': '', 'point':3}
 
     return render(request, 'user/user_center_site.html', context)
 
