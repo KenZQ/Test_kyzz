@@ -142,9 +142,6 @@ def user_center_info(request):
 @islogin
 def user_center_site(request):
 
-    return render(request, 'user/user_center_site.html')
-
-
     try:
         usermsg = UserAddressInfo.objects.filter(user_id =request.session['pid'])
         context = {'addrs': usermsg}
