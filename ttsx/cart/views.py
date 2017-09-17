@@ -38,8 +38,6 @@ def add(request, gid, count):
         cart.goods_id = gid
         cart.count = count
     cart.save()
-
-
     count = CartInfo.objects.filter(user_id=request.session['pid']).count()
     return JsonResponse({'count': count})
 

@@ -5,7 +5,7 @@
         <div class="header">
             <div class="welcome fl">欢迎来到天天生鲜!</div>
             <div class="fr">
-                {% if request.session.pid %}
+                {% if request.session.pid|default:'a' != 'a' %}
                     <div class="login_info fl" style="display: block">
                         欢迎您：<em>{{ request.session.uname }}</em>
                         <a href="/user/exit/" style="text-decoration:none; color:#666">&nbsp;&nbsp;退出</a>

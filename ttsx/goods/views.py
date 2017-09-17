@@ -73,7 +73,7 @@ def detail(request, id):
         gid = '%s' % good.id
         if 'ghistory' not in request.COOKIES:
             alist = [gid,]
-        if 'ghistory' in request.COOKIES:
+        else:
             a= request.COOKIES['ghistory']
             alist = a.split('+')
             if gid in alist:
