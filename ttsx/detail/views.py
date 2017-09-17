@@ -37,18 +37,6 @@ def buy(request):
 
     return render(request,'detail/order.html',context)
 
-
-
-'''
-事物：一旦操作失败则全部回退
-1、创建订单对象
-2、判断商品的库存  库存小于购买数量，不能购买成功
-3、创建详单对象
-4、修改商品库存
-5、删除购物车
-
-
-'''
 # 处理订单视图
 @transaction.atomic
 @views.islogin
@@ -103,49 +91,8 @@ def user_center_order(request,pindex):
 
 
 
-
-
-
-@views.islogin
-def pay(request,oid):
-    order = OrderInfo.objects.get(oid=oid)
-    order.oIsPay = True
-    order.save()
-    context = {'oder':order}
-    return render(request,'detail/pay.html',context)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""
-   # 获取订单
-
-    # 获取地址
-    address = request.POST.get()['uaddress']
-    # 获取姓名
-    uName = request.POST.get()['uName']
-
-    # 获取联系方式
-    uPhone = request.POST.get()['uphone']
-
-    # 获取支付方式
-    num = request.POST.get()['way']
+'''
+ num = request.POST.get()['way']
     if num == 0:
         wayOfPay = '货到付款'
 
@@ -157,37 +104,17 @@ def pay(request,oid):
 
     else:
         wayOfPay = '银联支付'
+'''
+
+@views.islogin
+def pay(request,oid):
+    order = OrderInfo.objects.get(oid=oid)
+    order.oIsPay = True
+    order.save()
+    context = {'oder':order}
+    return render(request,'detail/pay.html',context)
 
 
-    # 获取商品信息
-
-    #获取商品名称
-    goods = request.POST.get()['gtitle'] #按名称
-    goods_name =[]
-    for good in goods:
-        goods_name.append(good)
-
-    #获得商品价格
-    goods_price = request.POST['gprice']
-    #获得商品数量
-    goods_count = request.POST['count']
-    #生成订单号 = 当前时间 + 用户编号-->order_id
-    time = datetime.time()
-    user_id = request.POST['user_id']
-    order_id = '' + time
-    order_id += user_id
-
-    context = {
-        'address':address,
-        'uname':uName,
-        'uphone':uPhone,
-        'gtitle':goods_name,
-        'gprice':goods_price,
-        'gcount':goods_count,
-        'order_id':order_id
-    }
-    return render(request,'detail/user_center_order.html',context)
-"""
 
 
 
