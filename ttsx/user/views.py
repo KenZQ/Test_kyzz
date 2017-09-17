@@ -141,13 +141,13 @@ def active(request, id):
 
 # 判断是否已经登录
 def islogin(fn):
-    def inner(request, *args):
+    def inner(request, *args, **kwargs):
         try:
             if request.session['pid']:
                 pass
         except:
             return render(request, 'user/login.html')
-        return fn(request, *args)
+        return fn(request, *args, **kwargs)
 
     return inner
 
