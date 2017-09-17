@@ -96,7 +96,11 @@
 
 
                     <input type="submit" name="" class="buy_btn" value="立即购买" style="cursor:pointer">
+                    {% if request.session.pid %}
                     <a href="#" class="add_cart" id="add_cart">加入购物车</a>
+                    {% else %}
+                        <a href="/user/login/" class="add_cart" id="add_cart">加入购物车</a>
+                    {% endif %}
                 </div>
 
             </div>

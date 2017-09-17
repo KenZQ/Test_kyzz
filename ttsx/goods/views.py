@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 
 from cart.models import *
 from goods.models import *
@@ -12,7 +12,7 @@ def index(request):
     hot = GoodsInfo.objects.all().order_by('gclick')[0:4]
     # 获得分类下的点击商品,下面拿出来的是一个装有字典的列表，就是各个对象
     typelist = TypeInfo.objects.all()
-    #购物车的商品数量
+    # 购物车的商品数量
     try:
         uid = request.session['pid']
         carts = CartInfo.objects.filter(user_id=uid)
@@ -20,7 +20,7 @@ def index(request):
         carts = []
 
     count = len(carts)
-    context = {'hot': hot, 'typelist': typelist,'count':count}
+    context = {'hot': hot, 'typelist': typelist, 'count': count}
 
     for i in range(len(typelist)):
         type = typelist[i]
@@ -52,7 +52,7 @@ def list(request, tid, sid, pindex):
     # 返回page对象，包含商品信息
     page = paginator.page(int(pindex))
 
-    #购物车的商品数量
+    # 购物车的商品数量
     try:
         uid = request.session['pid']
         carts = CartInfo.objects.filter(user_id=uid)
@@ -61,13 +61,12 @@ def list(request, tid, sid, pindex):
     count = len(carts)
 
     context = {'page': page, 'paginator': paginator, 'typeinfo': type, 'sort': sid,
-               'news': news, 'type_id': tid, 'count':count}
+               'news': news, 'type_id': tid, 'count': count}
     return render(request, 'goods/list.html', context)
 
 
 def detail(request, id):
-
-    #购物车的商品数量
+    # 购物车的商品数量
     try:
         uid = request.session['pid']
         carts = CartInfo.objects.filter(user_id=uid)
@@ -79,7 +78,20 @@ def detail(request, id):
     try:
         good = GoodsInfo.objects.get(id=id)
         newgoods = GoodsInfo.objects.filter(isDelete=False).order_by('-id')[0:2]
-        return render(request, 'goods/detail.html', {'good': good, 'newgoods': newgoods, 'count':count})
+        response=  render(request, 'goods/detail.html', {'good': good, 'newgoods': newgoods, 'count':count})
+        # response = render_to_response('goods/detail.html', {'good': good, 'newgoods': newgoods, 'count': count})
+
+        if 'ghistory' not in request.COOKIES:
+            a = '%s+'%good.id
+        else:
+            a= request.COOKIES['ghistory']
+            a += '%s+'%good.id
+            if len(a)>20:
+                import re
+                a = re.match(r'\d+\+(.*)',a).group(1)
+
+        response.set_cookie('ghistory', a, expires=86400 * 8)
+        return response
     except:
         return HttpResponse('您的网络可能有问题')
 

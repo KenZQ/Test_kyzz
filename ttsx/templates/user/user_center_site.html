@@ -28,7 +28,8 @@
 
                     <dl>
                         <dt></dt>
-                        <dd id="addr">{{ addr.uaddress }} &nbsp;&nbsp;({{ addr.uname }}收) &nbsp;&nbsp;{{ addr.uphone }}</dd>
+                        <dd id="addr">{{ addr.uaddress }} &nbsp;&nbsp;&nbsp;&nbsp;({{ addr.uname }}收) &nbsp;&nbsp;&nbsp;&nbsp;{{ addr.uphone }}
+                           &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<a href="/user/addr_del{{ addr.id }}/">删除地址</a></dd>
                     </dl>
                 {% endfor %}
 

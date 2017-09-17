@@ -4,6 +4,7 @@
     <script>
 
         $(function () {
+
             $(".sort_bar").children('a').eq({{ sort }}-1).addClass('active').siblings().removeClass('active');
             $(".sort_bar").delegate('a', 'click', function () {
                 $(this).addClass('active').siblings().removeClass('active');
@@ -15,13 +16,21 @@
 
 
             $('.add_goods').click(function () {
-                var gid = $(this).attr('gid');
-                $.get('/cart/add'+gid+'_1/',function (data) {
+                if ({{ request.session.pid }}) {
+                    var gid = $(this).attr('gid');
+                    $.get('/cart/add' + gid + '_1/', function (data) {
 
-                    var count = data.count;
-                    $('.goods_count').html(count);
-                });
+                        var count = data.count;
+                        $('.goods_count').html(count);
+                    });
+                }
+                else {
+                    $.get('/user/login/');
+                }
+
             });
+
+
         });
     </script>
 {% endblock script %}
@@ -66,7 +75,11 @@
                         <div class="operate">
                             <span class="prize">￥{{ good.gprice }}</span>
                             <span class="unit">{{ good.gunit }}</span>
-                            <a href="#" gid='{{ good.id }}' class="add_goods" title="加入购物车"></a>
+                            {% if request.session.pid %}
+                                <a href="#" gid='{{ good.id }}' class="add_goods" title="加入购物车"></a>
+                            {% else %}
+                                <a href="/user/login/" class="add_goods"  title="加入购物车"></a>
+                            {% endif %}
                         </div>
                     </li>
                 {% endfor %}
