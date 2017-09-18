@@ -1,17 +1,39 @@
 {% extends 'index_base.html' %}
-{% block title %} 商品搜索　{% endblock title %}
 {% block script %}
+    <script>
+
+        $(function () {
+
+            $('.add_goods').click(function () {
+                if ({{ request.session.pid }}) {
+                    var gid = $(this).attr('gid');
+                    $.get('/cart/add' + gid + '_1/', function (data) {
+                        var count = data.count;
+                        $('.goods_count').text(count);
+                    });
+                }
+                else {
+                    $.get('/user/login/');
+                }
+
+            });
+
+
+        });
+    </script>
 {% endblock script %}
-{% block body %}
+
+
+{% block content %}
   <div class="breadcrumb">
         <a href="#">全部分类</a>
         <span>></span>
-        <a href="">{{ typeinfo.ttitle }}</a>
+        <a href="">{{ title }}</a>
     </div>
 
     <div class="main_wrap clearfix">
 
-        <div class="r_wrap fr clearfix">
+
 
 
             <ul class="goods_type_list clearfix">
@@ -22,7 +44,7 @@
                         <div class="operate">
                             <span class="prize">￥{{ good.object.gprice }}</span>
                             <span class="unit">{{ good.object.gunit }}</span>
-                            <a href="#" class="add_goods" title="加入购物车"></a>
+                            <a href="#" class="add_goods" gid={{ good.object.id }} title="加入购物车"></a>
                         </div>
                     </li>
                 {% endfor %}
@@ -33,9 +55,8 @@
             <div class="pagenation">
 
                 {% if page.has_previous %}
-                    <a href="/search/?q={{ query }}&amp;page={{ page.previous_page_number }}">&lt;上一页</a>
-                {% else %}
-                    <a href="">&lt;上一页</a>
+                    <a href="/search/?q={{ query }}&amp;page={{ page.previous_page_number }}">上一页</a>
+                    <a href="/search/?q={{ query }}&amp;page=１">首页</a>
                 {% endif %}
 
                 {% for i in paginator.page_range %}
@@ -48,14 +69,12 @@
                 {% endfor %}
 
                 {% if page.has_next %}
-                    <a href="/search/?q={{ query }}&amp;page={{ page.next_page_number }}">&lt;下一页</a>
-
-                {% else %}
-                    <a href="">&lt;下一页</a>
+                    <a href="/search/?q={{ query }}&amp;page={{ page.next_page_number }}">下一页</a>
+                    <a href="/search/?q={{ query }}&amp;page={{ paginator.num_pages }}">末页</a>
                 {% endif %}
 
             </div>
         </div>
-    </div>
 
-{% endblock body %}
+
+{% endblock content %}

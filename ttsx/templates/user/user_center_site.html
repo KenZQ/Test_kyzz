@@ -1,8 +1,8 @@
 {% extends 'usercenter_login_status.html' %}
 
 {% block script %}
-    <script type="text/javascript" src="/static/js/user_center/site.js"></script>
 {% endblock script %}
+
 {% block body %}
     <div class="search_bar clearfix">
         <a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
@@ -24,13 +24,22 @@
                 <li><a href="/user/user_center_site/" class="active">· 收货地址</a></li>
             </ul>
         </div>
+
+{% block content %}
+
+
         <div class="right_content clearfix">
             <h3 class="common_title2">收货地址</h3>
             <div class="site_con">
-                <dl>
-                    <dt>当前地址：</dt>
-                    <dd id="addr"> </dd>
-                </dl>
+                {% for addr in addrs %}
+
+                    <dl>
+                        <dt></dt>
+                        <dd id="addr">{{ addr.uaddress }} &nbsp;&nbsp;&nbsp;&nbsp;({{ addr.uname }}收) &nbsp;&nbsp;&nbsp;&nbsp;{{ addr.uphone }}
+                           &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<a href="/user/addr_del{{ addr.id }}/">删除地址</a></dd>
+                    </dl>
+                {% endfor %}
+
             </div>
             <h3 class="common_title2">编辑地址</h3>
             <div class="site_con">
@@ -59,4 +68,5 @@
     </div>
 
 
-{% endblock body %}
+
+{% endblock content %}

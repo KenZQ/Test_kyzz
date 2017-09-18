@@ -1,31 +1,24 @@
 {% extends 'index_base.html' %}
-{% block title %} 商品列表　{% endblock title %}
 {% block script %}
     <script>
 
         $(function () {
-            $(".sort_bar").children('a').eq({{ sort }}-1).addClass('active').siblings().removeClass('active');
-            $(".sort_bar").delegate('a', 'click', function () {
-                $(this).addClass('active').siblings().removeClass('active');
-
-            });
-            $(".pagenation").delegate('a', 'click', function () {
-                $(this).addClass('active').siblings().removeClass('active');
-            });
-
 
             $('.add_goods').click(function () {
-                var gid = $(this).attr('gid');
-                $.get('/cart/add'+gid+'_1/',function (data) {
+                    var gid = $(this).attr('gid');
+                    $.get('/cart/add' + gid + '_1/', function (data) {
 
-                    var count = data.count;
-                    $('.goods_count').html(count);
-                });
+                        var count = data.count;
+                        $('.goods_count').html(count);
+                    });
+
             });
+
+
         });
     </script>
 {% endblock script %}
-{% block body %}
+{% block content %}
 
 
     <div class="breadcrumb">
@@ -53,10 +46,11 @@
 
         <div class="r_wrap fr clearfix">
             <div class="sort_bar">
-                <a href="/list{{ type_id }}11/">默认</a>
-                <a href="/list{{ type_id }}21/">价格</a>
-                <a href="/list{{ type_id }}31/">人气</a>
+                <a href="/list{{ type_id }}11/" {% if sort == '1' %}class="active" {% endif %}>默认</a>
+                <a href="/list{{ type_id }}21/" {% if sort == '2' %} class="active" {% endif %}>价格</a>
+                <a href="/list{{ type_id }}31/" {% if sort == '3' %} class="active" {% endif %}>人气</a>
             </div>
+
 
             <ul class="goods_type_list clearfix">
                 {% for good in page %}
@@ -65,8 +59,12 @@
                         <h4><a href="/good_detail{{ good.id }}/">{{ good.gtitle }}</a></h4>
                         <div class="operate">
                             <span class="prize">￥{{ good.gprice }}</span>
-                            <span class="unit">{{ good.gunit }}</span>
-                            <a href="#" gid='{{ good.id }}' class="add_goods" title="加入购物车"></a>
+                            <span class="unit">{{ good.gprice }}/{{ good.gunit }}</span>
+                            {% if request.session.pid %}
+                                <a href="#" gid='{{ good.id }}' class="add_goods" title="加入购物车"></a>
+                            {% else %}
+                                <a href="/user/login/" class="add_goods" title="加入购物车"></a>
+                            {% endif %}
                         </div>
                     </li>
                 {% endfor %}
@@ -77,9 +75,8 @@
             <div class="pagenation">
 
                 {% if page.has_previous %}
-                    <a href="/list{{ type_id }}{{ sort }}{{ page.previous_page_number }}/">&lt;上一页</a>
-                {% else %}
-                    <a href="">&lt;上一页</a>
+                    <a href="/list{{ type_id }}{{ sort }}１/">首页</a>
+                    <a href="/list{{ type_id }}{{ sort }}{{ page.previous_page_number }}/">上一页</a>
                 {% endif %}
 
                 {% for i in paginator.page_range %}
@@ -92,10 +89,9 @@
                 {% endfor %}
 
                 {% if page.has_next %}
-                    <a href="/list{{ type_id }}{{ sort }}{{ page.next_page_number }}/">&lt;下一页</a>
+                    <a href="/list{{ type_id }}{{ sort }}{{ page.next_page_number }}/">下一页</a>
+                    <a href="/list{{ type_id }}{{ sort }}{{ paginator.num_pages }}/">最后一页</a>
 
-                {% else %}
-                    <a href="">&lt;下一页</a>
                 {% endif %}
 
             </div>
@@ -103,4 +99,4 @@
     </div>
 
 
-{% endblock body %}
+{% endblock content %}

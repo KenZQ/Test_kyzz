@@ -1,8 +1,107 @@
 {% extends 'base.html' %}
-{% block title %}
-    登录
-{% endblock title %}
-{% block script %}{% endblock script %}
+
+{% block script %}
+    <script>
+        $(function () {
+            if({{  error }} == 2){
+                $('.name_input').next().text('用户名或密码错误').show()
+            }
+            else if({{  error }} == 1){
+                $('.name_input').next().text('账户尚未激活，请前往注册的邮箱激活').show()
+
+            }
+
+            var error_name = false;
+            var error_password = false;
+            var error_yzm = false;
+
+
+            $('.name_input').blur(function () {
+                check_user_name();
+
+            });
+
+            $('#pwd').blur(function () {
+                check_pwd();
+            });
+
+            $('#yzm').blur(function () {
+                check_yzm();
+            });
+
+
+            function check_user_name() {
+                var len = $('.name_input').val().length;
+                if (len < 5 || len > 20) {
+                    $('.name_input').next().html('请输入5-20个字符的用户名');
+                    $('.name_input').next().show();
+                    error_name = true;
+                }
+                else {
+                    $('.name_input').next().hide();
+                    error_name = false;
+                }
+            }
+
+            function check_pwd() {
+                var len = $('#pwd').val().length;
+                if (len < 8 || len > 20) {
+                    $('#pwd').next().html('密码最少8位，最长20位');
+                    $('#pwd').next().show();
+                    error_password = true;
+                }
+                else {
+                    $('#pwd').next().hide();
+                    error_password = false;
+                }
+            }
+
+
+            function check_yzm() {
+
+                //验证码
+                var yzm = $('#yzm').val();
+                $.get('/user/yzm/?yzm=' + yzm, function (data) {
+                    if (data.msg) {
+                        $('#yzm').next().html(data.msg);
+                        $('#yzm').next().show();
+                        error_yzm = true;
+
+                    }
+                    else {
+                        $('#yzm').next().hide();
+                        error_yzm = false;
+
+                    }
+                })
+
+            }
+
+            $('#reg_form').submit(function () {
+                check_user_name();
+                check_pwd();
+                check_yzm();
+
+                if (error_name == false && error_password == false && error_yzm == false) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+
+            });
+
+            //验证码
+            $('#change_img').css('cursor', 'pointer').click(function () {
+                $.get('/user/verify_code/', function () {
+                    $('.con img').empty();
+                    $('.con img').attr('src', $('.con img').attr('src') + 1);
+
+                });
+            });
+        })
+    </script>
+{% endblock script %}
 
 {% block body %}
     <div class="login_top clearfix">
@@ -19,16 +118,25 @@
                     <a href="/user/register/">立即注册</a>
                 </div>
                 <div class="form_input">
-                    <form method="post" action="/user/verify_msg/">
-                        <input type="text" name="username" class="name_input" placeholder="请输入用户名">
+                    <form method="post" action="/user/verify_msg/" id="reg_form">
+                        <input type="text" name="username" class="name_input" placeholder="请输入用户名" value={{ uname }} >
                         <div class="user_error">输入错误</div>
-                        <input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
+                        <input type="password" name="pwd" class="pass_input" placeholder="请输入密码" id="pwd">
                         <div class="pwd_error">输入错误</div>
-                        <div class="more_input clearfix">
-                            <input type="checkbox" name="">
-                            <label>记住用户名</label>
-                            <a href="#">忘记密码</a>
+                        <div class="con">
+                            <input type="text" name="test" id="yzm" placeholder="验证码:">
+                            <span id="yzm_msg"></span>
+                            <img src="/user/verify_code/?" alt="">
+                            <span id="change_img"> 看不见，换一张&nbsp;&nbsp;</span>
                         </div>
+
+                        <div class="more_input clearfix">
+                            <input type="checkbox" name="remember" checked value="1">
+                            <label>记住用户名</label>
+                            <a href="/user/reset/">忘记密码</a>
+                        </div>
+
+
                         <input type="submit" name="" value="登录" class="input_submit">
                     </form>
                 </div>

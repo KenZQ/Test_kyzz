@@ -81,7 +81,7 @@
                     count = parseInt($(this).children().eq(0).children('.num_show').eq(0).val());
                     price = parseFloat($(this).prev().text());
                     total_2 = (count) * price;
-                    $(this).next().text(total_2.toFixed(2));
+                    $(this).next().text(total_2.toFixed(2)+'元');
                     total_1 += total_2;
                     total_count += count;
 
