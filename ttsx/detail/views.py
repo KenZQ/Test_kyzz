@@ -56,10 +56,11 @@ def handle(request):
     order = OrderInfo()
     order.oid = order_id
     order.user = UserInfo.objects.get(id=uid)
-    order.ototal = dict.get('pay')
+    order.ototal = float(dict.get('pay'))
     order.oaddress = dict.get('addr')
     order.save()
     for c in carts:
+        print(c.count, c.goods.gkucun)
         if c.count > c.goods.gkucun:
             transaction.savepoint_rollback(tran_id)
             return redirect('/cart/')
@@ -68,7 +69,7 @@ def handle(request):
         order_detail = OrderDetailInfo()
         order_detail.goods= c.goods
         order_detail.count = c.count
-        order_detail.price = int(c.goods.gprice) * int(c.count)
+        order_detail.price = c.goods.gprice
         order_detail.order_id = order_id
         order_detail.save()
         c.delete()

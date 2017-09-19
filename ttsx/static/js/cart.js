@@ -17,7 +17,7 @@ function count() {
     $('.num_show').each(function () {
         $(this).bind('input', 'propertychange', function () {
             var count = parseInt($(this).val());
-            if (isNaN($(this).val()) || count != $(this).val() || (count < 1)) {
+            if (isNaN(count) || count != $(this).val() || (count < 1)) {
                 $(this).val(1);
             }
             else if (count > 99) {
@@ -62,7 +62,6 @@ function edit(i) {
 
     var cid = i.parent().parent().siblings('.col01').children('input').val();
     var ccount = i.val();
-    console.log((cid), ccount);
     $.get('/cart/edit' + (cid) + '_' + ccount + '/')
 };
 
