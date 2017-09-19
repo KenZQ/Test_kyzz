@@ -51,10 +51,12 @@ def buy(request):
     dict = request.POST
     uid = request.session['pid']
     good_id = dict.get('good_id')
-    good_count = dict.get('good_count')
+    good_count = int(dict.get('good_count'))
     good = GoodsInfo.objects.get(id=good_id)
-    if int(good_count) > int(good.gkucun):
+    if good_count > int(good.gkucun):
         return HttpResponse("库存不足<a href='http://127.0.0.1:8000/good_detail%s/'>返回</a>" % good_id)
+    good.gkucun -= int(good_count)
+    good.save()
     cart = CartInfo()
     cart.user_id = uid
     cart.count = good_count

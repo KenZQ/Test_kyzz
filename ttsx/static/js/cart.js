@@ -8,7 +8,7 @@ $(function () {
     count();
     $('.col08').children('a').click(function () {
         var id = $(this).parent().siblings('.col01').children('input').val();
-        var dul = $(this).parent()
+        var dul = $(this).parent();
         cart_del(id,dul);
     });
 });
@@ -57,11 +57,11 @@ function count() {
     });
 
 }
-//                 修改数据
+// 修改数据
 function edit(i) {
 
 
-    var cid = i.parent().parent().siblings('.col01').children('input').val();
+    var cid = i.parents('.cart_list_td').find('.col01 input').val();
     var ccount = i.val();
     $.get('/cart/edit' + (cid) + '_' + ccount + '/')
 }
@@ -75,7 +75,7 @@ function total() {
         var price = 0;
         var total_2 = 0;
         if ($(this).siblings('.col01').children().prop('checked')) {
-            count = parseInt($(this).children().eq(0).children('.num_show').eq(0).val());
+            count = parseInt($(this).find('.num_show').val());
             price = parseFloat($(this).prev().text());
             total_2 = (count) * price;
             $(this).next().text(total_2.toFixed(2) + '元');
@@ -84,7 +84,7 @@ function total() {
 
         }
         else {
-            count = parseInt($(this).children().eq(0).children('.num_show').eq(0).val());
+            count = parseInt($(this).find('.num_show').val());
             price = parseFloat($(this).prev().text());
             total_2 = (count) * price;
             $(this).next().text(total_2.toFixed(2));
@@ -124,7 +124,6 @@ function cart_del(cart_id,dul) {
     if (del) {
         $.get('/cart/delete' + cart_id + '/', function (data) {
             if (data.ok == 1) {
-                // $('ul').remove('#' + cart_id);
                 dul.remove();
                 total();
             }
