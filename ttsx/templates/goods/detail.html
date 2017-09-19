@@ -47,7 +47,7 @@
                         location.href = '/user/login/';
                     }
                     var count = data.count;
-                    add();
+                    add(count);
 
 
                 });
@@ -72,9 +72,9 @@
                     $(".add_jump").stop().animate({
                             'left': $to_y + 7,
                             'top': $to_x + 7
-                        }, "fast", function (count) {
+                        }, "fast", function () {
 
-                            $(".add_jump").fadeOut('fast', function (count) {
+                            $(".add_jump").fadeOut('fast', function () {
 
                                 $('#show_count').text(count);
                             });

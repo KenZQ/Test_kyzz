@@ -41,8 +41,8 @@ def add(request, gid, count):
     if request.is_ajax():
         count = CartInfo.objects.filter(user_id=request.session['pid']).count()
         return JsonResponse({'count': count})
-    else:
-        redirect('/cart/')
+
+    return redirect('/cart/')
 
 
 
