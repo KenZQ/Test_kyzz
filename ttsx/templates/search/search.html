@@ -2,22 +2,43 @@
 {% block script %}
     <script>
 
-        $(function () {
+           $(function () {
 
-            $('.add_goods').click(function () {
-                if ({{ request.session.pid }}) {
-                    var gid = $(this).attr('gid');
-                    $.get('/cart/add' + gid + '_1/', function (data) {
-                        var count = data.count;
-                        $('.goods_count').text(count);
-                    });
-                }
-                else {
-                    $.get('/user/login/');
-                }
+           $('.add_goods').click(function () {
+               var $add_good = $(this);
+               var gid= $add_good.attr('gid');
+                $.get('/cart/add' + gid+ '_1/', function (data) {
+                    if (data.login == 1){
+                        location.href = '/user/login/';
+                    }
+                    var count = data.count;
+                    add($add_good,count);
 
+
+                });
             });
+             function add($add_good,count) {
 
+                    var $add_x = $add_good.offset().top;
+                    var $add_y = $add_good.offset().left;
+
+                    var $to_x = $('#show_count').offset().top;
+                    var $to_y = $('#show_count').offset().left;
+
+                    $(".add_jump").css({'left': $add_y + 80, 'top': $add_x + 10, 'display': 'block'});
+
+                    $(".add_jump").stop().animate({
+                            'left': $to_y + 7,
+                            'top': $to_x + 7
+                        }, "fast", function () {
+
+                            $(".add_jump").fadeOut('fast', function () {
+
+                                $('#show_count').text(count);
+                            });
+                        }
+                    );
+                }
 
         });
     </script>
@@ -44,7 +65,7 @@
                         <div class="operate">
                             <span class="prize">￥{{ good.object.gprice }}</span>
                             <span class="unit">{{ good.object.gunit }}</span>
-                            <a href="#" class="add_goods" gid={{ good.object.id }} title="加入购物车"></a>
+                            <a href="javascript:;" class="add_goods" gid='{{ good.object.id }}' title="加入购物车"></a>
                         </div>
                     </li>
                 {% endfor %}
@@ -75,6 +96,6 @@
 
             </div>
         </div>
-
+<div class="add_jump"></div>
 
 {% endblock content %}
