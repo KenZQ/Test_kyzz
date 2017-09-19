@@ -8,7 +8,8 @@ $(function () {
     count();
     $('.col08').children('a').click(function () {
         var id = $(this).parent().siblings('.col01').children('input').val();
-        cart_del(id);
+        var dul = $(this).parent()
+        cart_del(id,dul);
     });
 });
 
@@ -63,7 +64,7 @@ function edit(i) {
     var cid = i.parent().parent().siblings('.col01').children('input').val();
     var ccount = i.val();
     $.get('/cart/edit' + (cid) + '_' + ccount + '/')
-};
+}
 
 function total() {
     var total_1 = 0;
@@ -79,7 +80,7 @@ function total() {
             total_2 = (count) * price;
             $(this).next().text(total_2.toFixed(2) + '元');
             total_1 += total_2;
-            total_count += count;
+            total_count ++;
 
         }
         else {
@@ -117,13 +118,14 @@ function checkbox() {
     })
 
 }
-function cart_del(cart_id) {
+function cart_del(cart_id,dul) {
 
     var del = confirm('确定删除商品么？');
     if (del) {
         $.get('/cart/delete' + cart_id + '/', function (data) {
             if (data.ok == 1) {
-                $('ul').remove('#' + cart_id);
+                // $('ul').remove('#' + cart_id);
+                dul.remove();
                 total();
             }
         });
