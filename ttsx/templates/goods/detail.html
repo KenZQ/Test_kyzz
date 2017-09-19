@@ -16,9 +16,8 @@
                     $num.val(99);
                     count = 99;
                 }
+                sum1(count);
 
-                var tprice = price * count;
-                $total.text(tprice.toFixed(2));
             });
 
 
@@ -31,26 +30,64 @@
                     $num.val(99);
                     count = 99;
                 }
+                sum1(count);
 
-                var tprice = price * count;
-                $total.text(tprice.toFixed(2));
             });
 
             $('.minus').click(function () {
                 if ($num.val() >= 2) {
                     var count = parseInt($num.val()) - 1;
                     $num.val(count);
+                    sum1(count);
+                }
+            });
+            $('#add_cart').click(function () {
+                $.get('/cart/add{{ good.id }}' + '_' + $num.val() + '/', function (data) {
+                    if (data.login == 1){
+                        location.href = '/user/login/';
+                    }
+                    var count = data.count;
+                    add();
+
+
+                });
+            });
+
+
+                function sum1(count) {
                     var tprice = price * count;
                     $total.text(tprice.toFixed(2));
                 }
-            });
-            
-            $('#add_cart').click(function(){
-                $.get('/cart/add{{ good.id }}'+'_'+ $num.val()+'/', function (data) {
-                    $('.goods_count').text(data.count);
-                })
-            });
+
+                function add(count) {
+
+                    var $add_x = $('#add_cart').offset().top;
+                    var $add_y = $('#add_cart').offset().left;
+
+                    var $to_x = $('#show_count').offset().top;
+                    var $to_y = $('#show_count').offset().left;
+
+                    $(".add_jump").css({'left': $add_y + 80, 'top': $add_x + 10, 'display': 'block'});
+
+                    $(".add_jump").stop().animate({
+                            'left': $to_y + 7,
+                            'top': $to_x + 7
+                        }, "fast", function (count) {
+
+                            $(".add_jump").fadeOut('fast', function (count) {
+
+                                $('#show_count').text(count);
+                            });
+                        }
+                    );
+
+
+                }
+
+
         });
+
+
     </script>
 {% endblock script %}
 
@@ -67,39 +104,37 @@
     <form action="/cart/buy/" method="post">
         <input type="text" name="good_id" value="{{ good.id }}" style="display: none">
 
-    <div class="goods_detail_con clearfix">
-        <div class="goods_detail_pic fl"><img src="/static/{{ good.gpic }}"></div>
+        <div class="goods_detail_con clearfix">
+            <div class="goods_detail_pic fl"><img src="/static/{{ good.gpic }}"></div>
 
-        <div class="goods_detail_list fr">
-            <h3>{{ good.gtitle }}</h3>
-            <p>{{ good.gjianjie }}</p>
-            <div class="prize_bar">
-                <span class="show_pirze">¥<em class="price">{{ good.gprice }}</em></span>
-                <span class="show_unit">单  位：{{ good.gunit }}</span>
-            </div>
-            <div class="goods_num clearfix">
-                <div class="num_name fl">数 量：</div>
-                <div class="num_add fl">
-                    <input type="text" class="num_show fl" name="good_count" value="1">
-                    <a href="javascript:;" class="add fr">+</a>
-                    <a href="javascript:;" class="minus fr">-</a>
+            <div class="goods_detail_list fr">
+                <h3>{{ good.gtitle }}</h3>
+                <p>{{ good.gjianjie }}</p>
+                <div class="prize_bar">
+                    <span class="show_pirze">¥<em class="price">{{ good.gprice }}</em></span>
+                    <span class="show_unit">单  位：{{ good.gunit }}</span>
                 </div>
-            </div>
-            <div class="total">总价：<em class="tprice">{{ good.gprice }}</em>元
-                <div class="operate_btn">
-
-
-                    <input type="submit" name="" class="buy_btn" value="立即购买" style="cursor:pointer">
-                    {% if request.session.pid %}
-                    <a href="#" class="add_cart" id="add_cart">加入购物车</a>
-                    {% else %}
-                        <a href="/user/login/" class="add_cart" id="add_cart">加入购物车</a>
-                    {% endif %}
+                <div class="goods_num clearfix">
+                    <div class="num_name fl">数 量：</div>
+                    <div class="num_add fl">
+                        <input type="text" class="num_show fl" name="good_count" value="1">
+                        <a href="javascript:;" class="add fr">+</a>
+                        <a href="javascript:;" class="minus fr">-</a>
+                    </div>
                 </div>
+                <div class="total">总价：<em class="tprice">{{ good.gprice }}</em>元
+                    <div class="operate_btn">
 
+
+                        <input type="submit" name="" class="buy_btn" value="立即购买" style="cursor:pointer">
+                        <a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>
+
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div> </form>
+    </form>
     <div class="main_wrap clearfix">
         <div class="l_wrap fl clearfix">
             <div class="new_goods">
@@ -133,7 +168,7 @@
         </div>
     </div>
 
-
+    <div class="add_jump"></div>
 
 
 {% endblock content %}

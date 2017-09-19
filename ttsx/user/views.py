@@ -13,7 +13,7 @@ from hashlib import sha1
 
 # Create your views here.
 def register(request):
-    return render(request, 'user/register.html')
+    return render(request, 'user/register.html', {'title': '注册'})
 
 
 # 注册
@@ -21,11 +21,8 @@ def register_msg(request):
     dict = request.POST
     new_user_name = dict.get('user_name')
 
-    try:
-        if UserInfo.objects.get(uname=new_user_name):
-            return HttpResponse('用户已经存在')
-    except:
-        pass
+    if UserInfo.objects.filter(uname=new_user_name):
+        return HttpResponse('用户已经存在')
 
     new_user_email = dict.get('email')
     pwd2 = dict.get('pwd')
@@ -73,6 +70,7 @@ def login(request):
     context = {
         'uname': uname,
         'error': 3,
+        'title': '登录',
     }
     return render(request, 'user/login.html', context)
 
@@ -98,7 +96,6 @@ def verify_msg(request):
             'uname': user_name,
         }
         return render(request, 'user/login.html', context)
-
 
     if user_pwd != user.upwd:
         context = {
@@ -126,7 +123,7 @@ def verify_fail(request):
     return render(request, 'user/verify_fail.html')
 
 
-#注册后提示激活
+# 注册后提示激活
 def active(request, id):
     try:
         dict = request.GET
@@ -142,12 +139,13 @@ def active(request, id):
 # 判断是否已经登录
 def islogin(fn):
     def inner(request, *args, **kwargs):
-        try:
-            if request.session['pid']:
-                pass
-        except:
-            return render(request, 'user/login.html')
-        return fn(request, *args, **kwargs)
+        if 'pid' in request.session:
+            return fn(request, *args, **kwargs)
+
+        if request.is_ajax():
+            return JsonResponse({'login': 1})
+
+        return redirect('/user/login/')
 
     return inner
 
@@ -165,7 +163,7 @@ def user_center_info(request):
             for pk in goodIds:
                 good = GoodsInfo.objects.get(id=pk)
                 glist.append(good)
-        context = {'user_msg': usermsg[0], 'glist':glist, 'point':1}
+        context = {'user_msg': usermsg[0], 'glist': glist, 'point': 1}
     except:
         context = {}
     return render(request, 'user/user_center_info.html', context)
@@ -173,15 +171,13 @@ def user_center_info(request):
 
 @islogin
 def user_center_site(request):
-
     try:
         usermsg = UserAddressInfo.objects.filter(user_id=request.session['pid'])
-        context = {'addrs': usermsg,'point':3}
+        context = {'addrs': usermsg, 'point': 3}
     except:
-        context = {'addrs': '', 'point':3}
+        context = {'addrs': '', 'point': 3}
 
     return render(request, 'user/user_center_site.html', context)
-
 
 
 # 点击退出，清除ｓｅｓｓｉｏｎ
@@ -264,12 +260,12 @@ def reset_pwd(requset, id):
     return HttpResponse('重置成功,<a href="/">前往官网</a>')
 
 
-
 # 地址删除
 def addr_del(request, id):
-    addr = UserAddressInfo.objects.filter(id =id)
+    addr = UserAddressInfo.objects.filter(id=id)
     addr[0].delete()
     return redirect('/user/user_center_site/')
+
 
 def verify_code(request):
     import random

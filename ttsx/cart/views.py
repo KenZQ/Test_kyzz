@@ -38,8 +38,11 @@ def add(request, gid, count):
         cart.goods_id = gid
         cart.count = count
     cart.save()
-    count = CartInfo.objects.filter(user_id=request.session['pid']).count()
-    return JsonResponse({'count': count})
+    if request.is_ajax():
+        count = CartInfo.objects.filter(user_id=request.session['pid']).count()
+        return JsonResponse({'count': count})
+    else:
+        redirect('/cart/')
 
 
 
@@ -68,7 +71,7 @@ def edit(request, cart_id, count):
         count1 = cart.count = int(count)
         cart.save()
         data = {'ok': 0}
-    except Exception as e:
+    except:
         data = {'ok': count1}
     return JsonResponse(data)
 
@@ -79,6 +82,6 @@ def delete(request, cart_id):
         cart = CartInfo.objects.get(pk=int(cart_id))
         cart.delete()
         data = {'ok': 1}
-    except Exception as e:
+    except:
         data = {'ok': 0}
     return JsonResponse(data)
