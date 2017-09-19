@@ -163,9 +163,9 @@ def user_center_info(request):
             for pk in goodIds:
                 good = GoodsInfo.objects.get(id=pk)
                 glist.append(good)
-        context = {'user_msg': usermsg[0], 'glist': glist, 'point': 1}
+        context = {'user_msg': usermsg[0], 'glist': glist, 'point': 1,'title':'用户中心'}
     except:
-        context = {}
+        context = {'title':'用户中心'}
     return render(request, 'user/user_center_info.html', context)
 
 
@@ -173,9 +173,9 @@ def user_center_info(request):
 def user_center_site(request):
     try:
         usermsg = UserAddressInfo.objects.filter(user_id=request.session['pid'])
-        context = {'addrs': usermsg, 'point': 3}
+        context = {'addrs': usermsg, 'point': 3,'title':'收货地址'}
     except:
-        context = {'addrs': '', 'point': 3}
+        context = {'addrs': '', 'point': 3,'title':'收货地址'}
 
     return render(request, 'user/user_center_site.html', context)
 

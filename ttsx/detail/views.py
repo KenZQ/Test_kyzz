@@ -77,7 +77,7 @@ def handle(request):
     return redirect('/detail/user_center_order1/')
 
 
-
+@views.islogin
 def user_center_order(request,pindex):
 
     uid = request.session['pid']
