@@ -50,8 +50,14 @@
                         {% endfor %}
                     </td>
                     <td width="15%">{{ order.ototal }}元</td>
+                   {% if order.oIsPay %}
+                       	<td width="15%">已付款</td>
+							<td width="15%"><a href="#" class="oper_btn">查看物流</a></td>
+                    {% else %}
+
                     <td width="15%">待付款</td>
-                    <td width="15%"><a href="#" class="oper_btn">去付款</a></td>
+                    <td width="15%"><a href="/detail/pay/?oid={{ order.oid }}" class="oper_btn">去付款</a></td>
+                {% endif %}
                 </tr>
                 </tbody>
 

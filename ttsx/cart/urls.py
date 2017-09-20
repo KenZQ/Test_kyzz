@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^edit(\d+)_(\d+)/$',views.edit),
     url(r'^delete(\d+)/$',views.delete),
     url('^buy/$', views.buy),
+
 ]

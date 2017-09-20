@@ -77,6 +77,8 @@ def login(request):
 
 # 登录验证
 def verify_msg(request):
+    if request.method == 'GET':
+        return redirect('/user/login/')
     dict = request.POST
 
     user_name = dict.get('username')
@@ -107,7 +109,11 @@ def verify_msg(request):
     request.session.set_expiry(900)
     request.session['pid'] = user.id
     request.session['uname'] = user_name
-
+    if not request.session.get('addr_id',''):
+        try:
+            request.session['addr_id'] = user.useraddressinfo_set.all()[0].id
+        except:
+            pass
     referer_web = request.session.get('prev_page', '/user/user_center_info/')
     uname = dict.get('remember', '0')
     response = redirect(referer_web)
@@ -153,8 +159,9 @@ def islogin(fn):
 # 用户中心，个人信息
 @islogin
 def user_center_info(request):
+    addr_id = request.session.get('addr_id', 1)
     try:
-        usermsg = UserAddressInfo.objects.filter(user_id=request.session['pid']).order_by('-id')
+        usermsg = UserAddressInfo.objects.filter(user_id=request.session['pid']).get(id=addr_id)
 
         glist = []
         if 'ghistory' in request.COOKIES:
@@ -163,9 +170,9 @@ def user_center_info(request):
             for pk in goodIds:
                 good = GoodsInfo.objects.get(id=pk)
                 glist.append(good)
-        context = {'user_msg': usermsg[0], 'glist': glist, 'point': 1,'title':'用户中心'}
+        context = {'user_msg': usermsg, 'glist': glist, 'point': 1, 'title': '用户中心'}
     except:
-        context = {'title':'用户中心'}
+        context = {'title': '用户中心'}
     return render(request, 'user/user_center_info.html', context)
 
 
@@ -173,13 +180,17 @@ def user_center_info(request):
 def user_center_site(request):
     dict = request.GET
     aid = dict.get('aid')
-    old_addr =''
+    old_addr = ''
+    addr_id = request.session.get('addr_id', '')
+    now_addr=0
     if aid:
         old_addr = UserAddressInfo.objects.get(id=aid)
-
+    if addr_id:
+        now_addr = UserAddressInfo.objects.get(id=addr_id)
     usermsg = UserAddressInfo.objects.filter(user_id=request.session['pid'])
-    context = {'addrs': usermsg, 'point': 3,'title':'收货地址','msg':old_addr}
-
+    context = {'addrs': usermsg, 'point': 3,
+               'title': '收货地址', 'msg': old_addr,
+               'now_addr': now_addr}
 
     return render(request, 'user/user_center_site.html', context)
 
@@ -206,6 +217,13 @@ def edit_addr_msg(request):
     usermsg.user_id = user_id
     usermsg.save()
 
+    return redirect('/user/user_center_site/')
+
+
+def delivery_addr(request):
+    dict = request.GET
+    addr_id = int(dict.get('addr_id'))
+    request.session['addr_id'] = addr_id
     return redirect('/user/user_center_site/')
 
 

@@ -17,7 +17,7 @@ def cart(request):
         'title': '购物车',
         'hascart': 2,
         'carts': carts,
-        'count':count,
+        'count': count,
     }
     return render(request, 'cart/cart.html', context)
 
@@ -43,7 +43,6 @@ def add(request, gid, count):
         return JsonResponse({'count': count})
 
     return redirect('/cart/')
-
 
 
 @islogin
