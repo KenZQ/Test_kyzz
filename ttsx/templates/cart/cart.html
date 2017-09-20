@@ -22,7 +22,7 @@
                 <li class="col02"><img src="/static/{{ cart.goods.gpic }}"></li>
                 <li class="col03"><br><em>{{ cart.goods.gtitle }}</em></li>
                 <li class="col04">{{ cart.goods.gunit }}</li>
-                <li class="col05">{{ cart.goods.gprice }}</li>
+                <li class="col05"><em>{{ cart.goods.gprice }}</em>元</li>
                 <li class="col06">
                     <div class="num_add">
                         <a href="javascript:;" class="add fl">+</a>
@@ -30,7 +30,7 @@
                         <a href="javascript:;" class="minus fl">-</a>
                     </div>
                 </li>
-                <li class="col07">{{ cart.goods.gprice }}</li>
+                <li class="col07"></li>
                 <li class="col08"><a href="/cart/">删除</a></li>
             </ul>
         {% endfor %}

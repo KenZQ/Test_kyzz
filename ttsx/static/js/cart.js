@@ -76,8 +76,8 @@ function total() {
         var total_2 = 0;
         if ($(this).siblings('.col01').children().prop('checked')) {
             count = parseInt($(this).find('.num_show').val());
-            price = parseFloat($(this).prev().text());
-            total_2 = (count) * price;
+            price = parseFloat($(this).prev().children('em').text());
+            total_2 = count * price;
             $(this).next().text(total_2.toFixed(2) + '元');
             total_1 += total_2;
             total_count ++;
@@ -85,9 +85,9 @@ function total() {
         }
         else {
             count = parseInt($(this).find('.num_show').val());
-            price = parseFloat($(this).prev().text());
+            price = parseFloat($(this).prev().children('em').text());
             total_2 = (count) * price;
-            $(this).next().text(total_2.toFixed(2));
+            $(this).next().text(total_2.toFixed(2) + '元');
         }
 
 
