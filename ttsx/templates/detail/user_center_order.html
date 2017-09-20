@@ -1,5 +1,19 @@
 {% extends 'usercenter_login_status.html' %}
-{% block script %}{% endblock script %}
+{% block script %}
+    <script>
+    $(function () {
+        $('.order_goods_list').each(function (i,n) {
+            var price = parseFloat($(n).find('span').text());
+            var count = parseInt($(n).children('.col03').text());
+            var sum1 = price * count;
+            $(n).children('.col04').text(sum1.toFixed(2)+'元');
+        })
+
+
+
+    })
+    </script>
+{% endblock script %}
 
 {% block content %}
 
@@ -26,12 +40,12 @@
                     <td width="55%">
                         {% for good_detail in order.orderdetailinfo_set.all %}
                             <ul class="order_goods_list clearfix">
-                                <li class="col01"><img src="/static/{{ good_detail.goods.gpic }}/"></li>
+                                <li class="col01"><img src="/static/{{ good_detail.goods.gpic }}"></li>
                                 <li class="col02">
-                                    {{ good_detail.goods.gtitle }}<em>{{ good_detail.goods.gunit }}</em>
+                                    {{ good_detail.goods.gtitle|truncatechars:15 }}<em><span>{{ good_detail.price }}</span>/{{ good_detail.goods.gunit }}</em>
                                 </li>
                                 <li class="col03">{{ good_detail.count }}</li>
-                                <li class="col04">{{ good_detail.price }}元</li>
+                                <li class="col04"></li>
                             </ul>
                         {% endfor %}
                     </td>

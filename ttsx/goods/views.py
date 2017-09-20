@@ -66,6 +66,8 @@ def detail(request, id):
 
     try:
         good = GoodsInfo.objects.get(id=id)
+        good.gclick += 1
+        good.save()
         newgoods = good.gtype.goodsinfo_set.order_by('-id')[0:2]
         context = {'good': good, 'news': newgoods, 'count':count, 'title':'商品详细'}
         response=  render(request, 'goods/detail.html', context)

@@ -60,7 +60,7 @@
             <ul class="goods_type_list clearfix">
                 {% for good in page %}
                     <li>
-                        <a href="/good_detail{{ good.object.id}}/"><img src='/static/{{ good.object.gpic }}/'></a>
+                        <a href="/good_detail{{ good.object.id}}/"><img src='/static/{{ good.object.gpic }}'></a>
                         <h4><a href="/good_detail{{ good.object.id }}/">{{ good.object }}</a></h4>
                         <div class="operate">
                             <span class="prize">￥{{ good.object.gprice }}</span>
@@ -76,8 +76,8 @@
             <div class="pagenation">
 
                 {% if page.has_previous %}
-                    <a href="/search/?q={{ query }}&amp;page={{ page.previous_page_number }}">上一页</a>
                     <a href="/search/?q={{ query }}&amp;page=１">首页</a>
+                    <a href="/search/?q={{ query }}&amp;page={{ page.previous_page_number }}">上一页</a>
                 {% endif %}
 
                 {% for i in paginator.page_range %}

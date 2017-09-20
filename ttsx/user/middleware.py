@@ -27,6 +27,7 @@ class UserStatus:
             '/user/isexit/',
             '/user/yzm/',
             '/user/top_area/',
+            '/cart/buy/'
 
         ]
         if request.path not in no_path :

@@ -36,7 +36,7 @@ def register_msg(request):
     new_user.save()
     yzm = new_user_pwd[10:31]
     task.send.delay(new_user.id, new_user_email, yzm)
-    return render(request, 'user/login.html')
+    return HttpResponse("注册成功，请前往邮箱激活<a　href='/user/login/'>前往登录页</a>")
 
 
 # '用户已经存在'
@@ -171,11 +171,15 @@ def user_center_info(request):
 
 @islogin
 def user_center_site(request):
-    try:
-        usermsg = UserAddressInfo.objects.filter(user_id=request.session['pid'])
-        context = {'addrs': usermsg, 'point': 3,'title':'收货地址'}
-    except:
-        context = {'addrs': '', 'point': 3,'title':'收货地址'}
+    dict = request.GET
+    aid = dict.get('aid')
+    old_addr =''
+    if aid:
+        old_addr = UserAddressInfo.objects.get(id=aid)
+
+    usermsg = UserAddressInfo.objects.filter(user_id=request.session['pid'])
+    context = {'addrs': usermsg, 'point': 3,'title':'收货地址','msg':old_addr}
+
 
     return render(request, 'user/user_center_site.html', context)
 
@@ -191,8 +195,11 @@ def user_exit(request):
 def edit_addr_msg(request):
     dict = request.POST
     user_id = request.session['pid']
-
-    usermsg = UserAddressInfo()
+    aid = int(dict.get('aid'))
+    if aid:
+        usermsg = UserAddressInfo.objects.get(id=aid)
+    else:
+        usermsg = UserAddressInfo()
     usermsg.uname = dict.get('recipients')
     usermsg.uaddress = dict.get('addr')
     usermsg.uphone = dict.get('phone')

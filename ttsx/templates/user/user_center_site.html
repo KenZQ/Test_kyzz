@@ -5,43 +5,42 @@
 {% block content %}
 
 
-        <div class="right_content clearfix">
-            <h3 class="common_title2">收货地址</h3>
-            <div class="site_con">
-                {% for addr in addrs %}
+    <div class="right_content clearfix">
+        <h3 class="common_title2">收货地址</h3>
+        <div class="site_con">
+            {% for addr in addrs %}
 
-                    <dl>
-                        <dt></dt>
-                        <dd id="addr">{{ addr.uaddress }} &nbsp;&nbsp;&nbsp;&nbsp;({{ addr.uname }}收) &nbsp;&nbsp;&nbsp;&nbsp;{{ addr.uphone }}
-                           &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<a href="/user/addr_del{{ addr.id }}/">删除地址</a></dd>
-                    </dl>
-                {% endfor %}
+                <dl>
+                    <dt></dt>
+                    <dd id="addr">{{ addr.uaddress }} &nbsp;&nbsp;&nbsp;&nbsp;({{ addr.uname }}收) &nbsp;&nbsp;&nbsp;&nbsp;{{ addr.uphone }}
+                        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<a
+                                href="/user/user_center_site/?aid={{ addr.id }}">修改地址</a>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<a
+                                href="/user/addr_del{{ addr.id }}/">删除地址</a></dd>
+                </dl>
+            {% endfor %}
 
-            </div>
-            <h3 class="common_title2">编辑地址</h3>
-            <div class="site_con">
-                <form method="post" action="/user/edit_addr_msg/">
-                    <div class="form_group">
-                        <label>收件人：</label>
-                        <input type="text" name="recipients">
-                    </div>
-                    <div class="form_group form_group2">
-                        <label>详细地址：</label>
-                        <textarea class="site_area" name="addr"></textarea>
-                    </div>
-                    <div class="form_group">
-                        <label>邮编：</label>
-                        <input type="text" name="postal_code">
-                    </div>
-                    <div class="form_group">
-                        <label>手机：</label>
-                        <input type="text" name="phone">
-                    </div>
-
-                    <input type="submit" name="" value="提交" class="info_submit">
-                </form>
-            </div>
         </div>
+        <h3 class="common_title2">编辑地址</h3>
+        <div class="site_con">
+            <form method="post" action="/user/edit_addr_msg/">
+                <input type="hidden" name="aid" value="{{ msg.id|default:0 }}">
+                <div class="form_group">
+                    <label>收件人：</label>
+                    <input type="text" name="recipients" value="{{ msg.uname|default:''  }}">
+                </div>
+                <div class="form_group form_group2">
+                    <label>详细地址：</label>
+                    <textarea class="site_area" name="addr" >{{ msg.uaddress|default:'' }}</textarea>
+                </div>
+                <div class="form_group">
+                    <label>手机：</label>
+                    <input type="text" name="phone" value="{{ msg.uphone|default:''  }}">
+                </div>
+
+                <input type="submit" name="" value="提交" class="info_submit">
+            </form>
+        </div>
+    </div>
 
 
 
